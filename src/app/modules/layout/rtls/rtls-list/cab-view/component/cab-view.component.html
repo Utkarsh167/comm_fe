@@ -1,0 +1,62 @@
+<div class="mapWrapper">
+    <div class="cabinformation">
+        <div class="cabInfoWrap">
+            <div class="cablftWrapper">
+                <div class="cabDriverInfoWrapper">
+                    <div class="driverList">
+                        <div class="form-group">
+                            <label>Cab ID</label>
+                            <p>{{mapData?.cabId?.cabBadge}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Driver Name</label>
+                            <!-- <p>{{cab?.cabId?.driverMapped |findDriverName}}</p> -->
+                            <p>{{mapData?.cabId?.driverMapped[0].name}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Location</label>
+                            <p>{{mapData?.cabId?.driverMapped[0]?.companyLocation.address}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Drop Location</label>
+                            <p>{{mapData?.cabId?.driverMapped[0]?.companyLocation.address}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <p>{{(mapData?.cabId?.driverMapped[0] |findDriverName:'startTime') | date :'shortTime'}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>End Time</label>
+                            <p>{{(mapData?.cabId?.driverMapped[0] |findDriverName:'endTime') | date :'shortTime'}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <p class="ongoing">{{mapData?.driverStartRide |findDriverName:'status'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cabrtwrapper">
+                <app-detail [mapData]="mapData"></app-detail>
+            </div>
+        </div>
+
+
+        <div class="pickupView">
+            <button mat-raised-button routerLink="/admin/rtls/map" matTooltip="Go-to-map" matTooltipPosition="right" mat-raised-button>
+                <img src="./assets/images/go_to_map.svg" alt="Go-To-Map">
+            </button>
+
+            <button routerLink="/admin/rtls/list" matTooltip="view-List" matTooltipPosition="right" mat-raised-button>
+                <img src="./assets/images/view_more.svg" alt="Go-To-Map">
+            </button>
+
+        </div>
+    </div>
+    <div class="mapparentWrapper">
+        <app-map-tracking [mapData]="mapData" [driverLiveLocation]="driverLiveLocation">
+        </app-map-tracking>
+    </div>
+
+</div>

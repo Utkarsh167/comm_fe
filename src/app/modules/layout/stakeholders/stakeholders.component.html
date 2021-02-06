@@ -1,0 +1,39 @@
+<div class="tab_wrapper">
+
+    <ul *ngIf="adminRole=='sub'">
+        <ng-template [ngxPermissionsOnly]="['employee']">
+            <li><a [routerLink]="'EMPLOYEES'|absolutePath" routerLinkActive="active">Employee</a></li>
+        </ng-template>
+
+        <ng-template [ngxPermissionsOnly]="['vendor']">
+            <li><a [routerLink]="'VENDOR'|absolutePath" routerLinkActive="active">Vendor</a></li>
+        </ng-template>
+
+        <ng-template [ngxPermissionsOnly]="['cab']">
+            <li><a [routerLink]="'CAB'|absolutePath" routerLinkActive="active">Cab</a></li>
+        </ng-template>
+
+        <ng-template [ngxPermissionsOnly]="['driver']">
+            <li><a [routerLink]="'DRIVER'|absolutePath" routerLinkActive="active">Driver</a></li>
+        </ng-template>
+
+        <ng-template [ngxPermissionsOnly]="['cab']">
+            <li><a [routerLink]="'CAB_MAPPING'|absolutePath" routerLinkActive="active">Cab Mapping</a></li>
+        </ng-template>
+    </ul>
+
+    <ul *ngIf="adminRole=='admin'">
+        <li><a [routerLink]="'EMPLOYEES'|absolutePath" routerLinkActive="active">Employee</a></li>
+
+        <li><a [routerLink]="'VENDOR'|absolutePath" routerLinkActive="active">Vendor</a></li>
+
+        <li><a [routerLink]="'CAB'|absolutePath" routerLinkActive="active">Cab</a></li>
+
+        <li><a [routerLink]="'DRIVER'|absolutePath" routerLinkActive="active">Driver</a></li>
+
+        <li><a [routerLink]="'CAB_MAPPING'|absolutePath" routerLinkActive="active">Cab Mapping</a></li>
+    </ul>
+</div>
+<div class="parentWrapper">
+    <router-outlet></router-outlet>
+</div>

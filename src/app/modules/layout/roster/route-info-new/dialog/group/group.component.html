@@ -1,0 +1,71 @@
+<div class="employee_detail">
+    <h4>Employee Details</h4>
+    <img src="./assets/images/cross.svg" class="cross" (click)="onNoClick()" />
+    <div class="empFilter">
+        <div class="flex_row">
+            <div class="flex_col_sm_10">
+                <label for="">Emp Id</label>
+            </div>
+        </div>
+        <div class="flex_row">
+            <div class="flex_col_sm_10">
+                <div class="form_filed_wrapper">
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="Enter emp id for search" (keyup.enter)="searchResult()"
+                            [(ngModel)]="search">
+                        <mat-icon class="clear" *ngIf="search.trim()" (click)="resetSearch()">close</mat-icon>
+                    </mat-form-field>
+                    <mat-icon class="search" (click)="searchResult()">search</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div class="employeeListDtl selectEmployee" *ngIf="employeeData">
+            <div class="flex_row">
+                <div class="flex_col_sm_6">
+                    <label for="">Emp Id</label>
+                </div>
+                <div class="flex_col_sm_6">
+                    <p for="">{{employeeData?.employeeId}}</p>
+                </div>
+            </div>
+            <div class="flex_row">
+                <div class="flex_col_sm_6">
+                    <label for="">Name</label>
+                </div>
+                <div class="flex_col_sm_6">
+                    <p for="">{{employeeData?.name}}</p>
+                </div>
+            </div>
+            <!-- Added gender - Shivakumar A -->
+            <div class="flex_row">
+                <div class="flex_col_sm_6">
+                    <label for="">Gender</label>
+                </div>
+                <div class="flex_col_sm_6">
+                    <p for="">{{employeeData?.gender}}</p>
+                </div>
+            </div>
+             
+            <div class="flex_row">
+                <div class="flex_col_sm_6">
+                    <label for="">Address</label>
+                </div>
+                <div class="flex_col_sm_6">
+                    <p for="">{{employeeData?.pickup?.address?.fullAddress}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex_row">
+            <div class="flex_col_sm_10">
+                <div class="form_filed_wrapper_details text-center">
+                    <ul class="btn_wrapper">
+                        <li> <button mat-raised-button type="button" (click)="confirmationDialog()">Cancel</button>
+                        </li>
+                        <li> <button mat-raised-button color="primary" (click)="addEmployee()">Save</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

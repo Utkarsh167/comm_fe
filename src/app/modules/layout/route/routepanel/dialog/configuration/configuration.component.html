@@ -1,0 +1,65 @@
+<div class="employee_detail">
+    <h4>Add Group Configuration</h4>
+    <img src="./assets/images/cross-white.svg" class="cross" (click)="onNoClick()" />
+    <form [formGroup]="configurationForm" (ngSubmit)="createGroup()">
+        <div class="employeeListDtl">
+
+            <div class="flex_row">
+                <div class="flex_col_sm_5">
+                    <mat-label>Max Trip Time</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input matInput numberOnly formControlName="maxTripDuration" placeholder="Enter max trip time">
+                        <mat-error>{{getControl('maxTripDuration')|validate:'Trip Duration'}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="flex_col_sm_5">
+                    <mat-label>Group Capacity</mat-label>
+                    <mat-form-field appearance="outline">
+                        <mat-select placeholder="Select Capacity" formControlName="maxGroupSize">
+                            <mat-option *ngFor="let emp of maxEmp" [value]="emp">
+                                {{emp}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{getControl('maxGroupSize')|validate:'Group Size'}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex_row">
+                <div class="flex_col_sm_5">
+                    <mat-label>Waiting Time (In min)</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input matInput numberOnly formControlName="waitTime" placeholder="Enter waiting time">
+                        <mat-error>{{getControl('waitTime')|validate:'Waiting Time'}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <div class="flex_row">
+      <div class="flex_col_sm_5">
+        <mat-label>Valid From</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput [matDatepicker]="picker" readonly (click)="picker.open()" placeholder="Select date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="flex_col_sm_5">
+        <mat-label>Valid To</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput [matDatepicker]="picker1" readonly (click)="picker1.open()" placeholder="Select date">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div> -->
+            <div class="flex_row">
+                <div class="flex_col_sm_10">
+                    <ul class="btn_route">
+                        <li> <button mat-raised-button color="primary" (click)="onNoClick(false)"> Cancel</button> </li>
+                        <li> <button mat-raised-button color="primary">Add</button> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

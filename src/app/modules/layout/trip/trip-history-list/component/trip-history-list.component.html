@@ -1,0 +1,13 @@
+<div class="parentWrapper">
+  <div class="white_wrapper">
+    <mat-tab-group (selectedTabChange)="tabRefresh($event)">
+      <mat-tab label="Login">
+        <app-login-trip [loginTabChange]="loginTabChange"></app-login-trip>
+      </mat-tab>
+      <mat-tab label="Logout">
+        <app-logout-trip [logoutTabChange]="looutTabChange"></app-logout-trip>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+</div>

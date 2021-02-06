@@ -1,0 +1,257 @@
+<div class="custom_container">
+    <div class="white_wrapper">
+        <h2 class="heading">Edit Profile </h2>
+        <form [formGroup]="editProfileForm" #form="ngForm" class="classCategoryForm" >
+            <div class="form_wrapper">
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper_details">
+                            <label class="form_label">Name</label>
+                            <mat-form-field class="inputfield">
+                                <input matInput appNospace maxlength="50" number formControlName="name">
+                                <mat-error>{{
+                                    getControl("name") | validate: "name"
+                                  }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper_details">
+                            <label class="form_label">Email</label>
+                            <mat-form-field class="inputfield">
+                                <input matInput number formControlName="email">
+                                <mat-error>{{getControl('email')|validate:'Email'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div> -->
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper_details">
+                            <label class="form_label">CRF/Month (Employee)</label>
+                            <mat-form-field class="inputfield">
+                                <input matInput number formControlName="crfLimitMonth">
+                                <mat-error>{{getControl('crfLimitMonth')|validate:'CRF limit'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper_details">
+                            <label class="form_label">Login Cutoff Duration</label>
+                            <!-- hrs -- duration -- satyam -->
+                            <div class="row">
+                            <mat-form-field class="inputfield flex_col_sm_9">
+                                <!-- <input matInput appNospace maxlength="50" number formControlName="loginCutoff"> -->
+                                <input [owlDateTimeTrigger]="dt13" (click)="dt13.open()"
+                                                            class="hasRightIcon" formControlName="loginCutoff" matInput
+                                                            [owlDateTime]="dt13"  readonly>
+                                                        <!-- <owl-date-time [hour12Timer]="true" [pickerType]="'timer'" #dt2>
+                                                        </owl-date-time> -->
+                                                        <!-- 24 hrs format - Shivakumar A -->
+                                                        <owl-date-time [hour12Timer]="false" [pickerType]="'timer'"
+                                                            #dt13>
+                                                        </owl-date-time>
+                                
+                                <!-- <mat-error>{{
+                                    getControl("cutOff") | validate: "cutOff"
+                                  }}</mat-error> -->
+                            </mat-form-field>
+                            <span class="flex_col_sm_2">hrs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper_details">
+                            <label class="form_label">Logout Cutoff Duration</label>
+                            <!-- hrs -- duration -- satyam -->
+                            <div class="row">
+                            <mat-form-field class="inputfield flex_col_sm_9">
+                                <!-- <input matInput appNospace maxlength="50" number formControlName="logoutCutoff"> -->
+                                <input [owlDateTimeTrigger]="dt14" (click)="dt14.open()"
+                                                            class="hasRightIcon" formControlName="logoutCutoff" matInput
+                                                            [owlDateTime]="dt14"  readonly>
+                                                        <!-- <owl-date-time [hour12Timer]="true" [pickerType]="'timer'" #dt2>
+                                                        </owl-date-time> -->
+                                                        <!-- 24 hrs format - Shivakumar A -->
+                                                        <owl-date-time [hour12Timer]="false" [pickerType]="'timer'"
+                                                            #dt14>
+                                                        </owl-date-time>
+                                
+                                <!-- <mat-error>{{
+                                    getControl("cutOff") | validate: "cutOff"
+                                  }}</mat-error> -->
+                            </mat-form-field>
+                            <span class="flex_col_sm_2">hrs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_10">
+                        <div class="form_filed_wrapper_details">
+                            <mat-form-field>
+                                <input matInput placeholder="Search Location" autocorrect="off"
+                                    formControlName="address" autocapitalize="off" spellcheck="off" type="text"
+                                    class="textbox" #search id="search" name="search">
+                                <mat-icon matPrefix>search</mat-icon>
+                                <mat-error>{{getControl('address')|validate:'Name'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <!-- <button mat-raised-button class="addMore" matTooltip="Add More Slots" *ngIf="shiftSlot.length < 10" (click)="addSlot()" color="primary">
+                        <mat-icon>add</mat-icon> Add Slots
+                    </button> -->
+                    <div class="flex_col_sm_3 profileSlot" formArrayName="shiftSlot"
+                        *ngFor="let question of shiftSlot.controls; let j = index">
+                        <div class="form_filed_wrapper_details">
+                            <mat-expansion-panel [disabled]="question.value.isEdit"
+                                [ngClass]="{'slotValid': shiftSlot.controls[j].valid, 'slotInvalid': shiftSlot.controls[j].invalid && shiftSlot.controls[j].touched}"
+                                [formGroupName]="j">
+                                <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight"
+                                    [expandedHeight]="customExpandedHeight">
+                                    <mat-panel-title>
+                                        <!-- <h2> Slot-{{j + 1 }} </h2> -->
+                                        <!-- Changed Slot to Shift - Shivakumar A -->
+                                        <h2> Shift-{{j + 1 }} </h2>
+
+                                    </mat-panel-title>
+                                    <button type="button" *ngIf="!question.value.isEdit"
+                                        (click)="$event.stopPropagation();" class="more-option" mat-icon-button
+                                        [matMenuTriggerFor]="beforeMenu">
+                                        <img src="./assets/images/more.svg">
+                                    </button>
+
+                                    <mat-menu #beforeMenu="matMenu" xPosition="before">
+                                        <button type="button" mat-menu-item (click)="deleteSlot(j)">Delete</button>
+                                    </mat-menu>
+
+                                </mat-expansion-panel-header>
+                                <div class="row">
+
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <mat-form-field class="inputfield">
+                                                        <input class="hasRightIcon" formControlName="shiftName"
+                                                            placeholder="Name" matInput>
+
+                                                        <mat-error
+                                                            *ngIf="shiftSlot.controls[j].controls.shiftName.invalid && (shiftSlot.controls[j].controls.shiftName.dirty || shiftSlot.controls[j].controls.shiftName.touched)">
+                                                            <mat-error
+                                                                *ngIf="shiftSlot.controls[j].controls.shiftName.errors.required">
+                                                                Shift Name Requried
+                                                            </mat-error>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <mat-form-field class="inputfield">
+                                                        <input [owlDateTimeTrigger]="dt2" (click)="dt2.open()"
+                                                            class="hasRightIcon" formControlName="startShift" matInput
+                                                            [owlDateTime]="dt2" placeholder="Start Time" readonly>
+                                                        <!-- <owl-date-time [hour12Timer]="true" [pickerType]="'timer'" #dt2>
+                                                        </owl-date-time> -->
+                                                        <!-- 24 hrs format - Shivakumar A -->
+                                                        <owl-date-time [hour12Timer]="false" [pickerType]="'timer'"
+                                                            #dt2>
+                                                        </owl-date-time>
+
+                                                        <mat-error
+                                                            *ngIf="shiftSlot.controls[j].controls.startShift.invalid && (shiftSlot.controls[j].controls.startShift.dirty || shiftSlot.controls[j].controls.startShift.touched)">
+                                                            <mat-error
+                                                                *ngIf="shiftSlot.controls[j].controls.startShift.errors.required">
+                                                                Shift Start Time Requried
+                                                            </mat-error>
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <mat-form-field class="inputfield">
+                                                        <input formControlName="endShift" (click)="dt12.open()"
+                                                            [owlDateTimeTrigger]="dt12" class="hasRightIcon" matInput
+                                                            [owlDateTime]="dt12" placeholder="Finish Time" readonly>
+                                                        <!-- <owl-date-time [hour12Timer]="true" [pickerType]="'timer'"
+                                                            #dt12></owl-date-time> -->
+                                                        <!-- 24 hrs format - Shivakumar A -->
+                                                        <owl-date-time [hour12Timer]="false" [pickerType]="'timer'"
+                                                            #dt12></owl-date-time>
+
+                                                        <mat-error
+                                                            *ngIf="shiftSlot.controls[j].controls.endShift.invalid && (shiftSlot.controls[j].controls.endShift.dirty || shiftSlot.controls[j].controls.endShift.touched)">
+                                                            <mat-error
+                                                                *ngIf="shiftSlot.controls[j].controls.endShift.errors.required">
+                                                                Shift End Time Requried
+                                                            </mat-error>
+                                                        </mat-error>
+
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 col-xs-12" formArrayName="weekOff">
+                                                <label for="" class="input-label">Weekoffs</label>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <div
+                                                            *ngFor="let Y of question['controls'].weekOff['controls']; let iy=index">
+                                                            <div formGroupName="{{iy}}">
+                                                                <mat-checkbox formControlName="{{week.key}}"
+                                                                    *ngFor="let week of Y.value | keyvalue; let i=index">
+                                                                    {{week.key | viewWeekends}}
+                                                                </mat-checkbox>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <a type="button" mat-raised-button class="addMore" matTooltip="Add More Slots"
+                    *ngIf="shiftSlot.length < 50" (click)="addSlot()" color="primary"> -->
+                    <!-- <mat-icon>add</mat-icon> Add Slots -->
+                    <!-- Changed Slots to Shifts - SHivakumar A -->
+                    <a type="button" mat-raised-button class="addMore" matTooltip="Add More Shifts"
+                    *ngIf="shiftSlot.length < 50" (click)="addSlot()" color="primary">
+                    <mat-icon>add</mat-icon> Add Shifts
+                </a>
+                <!-- <div class="addMore" matTooltip="Add More Slots" *ngIf="shiftSlot.length < 10" (click)="addSlot()">
+                    <img src="./assets/images/plus.svg"> Add Slots
+                </div> -->
+
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_10">
+                        <div class="form_filed_wrapper_details text-center">
+                            <ul class="btn_wrapper">
+                                <!-- <li> <a color="primary" mat-raised-button matTooltip="Add More Slots"
+                                        *ngIf="shiftSlot.length < 10" class="add_btn txthover mt-30"
+                                        (click)="addSlot()">Add more slots</a></li> -->
+                                <li routerLink="/admin/profile"><button type="button" class="mt-30"
+                                        mat-raised-button>Cancel</button>
+                                </li>
+                                <li><button (click)="submitForm()"  color="primary" class="mt-30" mat-raised-button>Update</button></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,340 @@
+<div class="white_wrapper action">
+  <div class="flex_row">
+    <div class="flex_col_sm_5 rowFilterBox">
+      <app-search-filter
+        [placeholder]="'Search by model name, vendor name and cab id '"
+        (setSearch)="setSearch($event)"
+      >
+      </app-search-filter>
+
+      <ul class="archieveData">
+        <li [routerLink]="'ARCHIVED_CAB' | absolutePath">
+          <a>Archived</a>
+        </li>
+      </ul>
+    </div>
+    <div class="flex_col_sm_5">
+      <ul class="btn_wrapper text-right">
+        <li>
+          <app-filter-count
+            [filterCount]="appliedFilterCount"
+          ></app-filter-count>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            (click)="showFilter = !showFilter"
+            color="primary"
+          >
+            <mat-icon>filter_list</mat-icon> Filter
+          </button>
+        </li>
+
+        <li class="action">
+          <button
+            color="primary"
+            class="action_menu"
+            [matMenuTriggerFor]="menu"
+          >
+            <mat-icon>more_vert</mat-icon> Action
+          </button>
+
+          <ul class="actionmenu">
+            <mat-menu #menu="matMenu">
+              <li>
+                <a href="assets/xls/cab.xls" class="csv-product">
+                  <button mat-raised-button color="primary">
+                    <mat-icon>arrow_downward</mat-icon> Download Sample XLS
+                  </button>
+                </a>
+              </li>
+              <li>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="csv-product upload"
+                >
+                  <input
+                    type="file"
+                    #upload_csv
+                    (change)="uploadCSV($event)"
+                    accept=".xls"
+                    class="fileButton"
+                  />
+                  <mat-icon>cloud_upload</mat-icon> Upload XLS
+                </button>
+                <div class="uploadData">
+                  <label *ngIf="csvFileName"
+                    >{{ csvFileName }}
+                    <span title="Remove File" (click)="removeCSV()">
+                      <img alt="Remove" src="assets/images/delete.svg" />
+                    </span>
+                  </label>
+                </div>
+              </li>
+            </mat-menu>
+          </ul>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            [routerLink]="'ADD_CAB' | absolutePath"
+            color="primary"
+          >
+            <mat-icon>add</mat-icon> Add Cab
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="flex_row">
+    <ul class="breadcrumb">
+      <li>
+        <a href="javascript:void(0)">Stakeholders</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" class="active">Cab</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div
+  class="white_wrapper filter_wrapper"
+  [class.filter_wrapper_show]="showFilter"
+>
+  <div class="flex_row">
+    <div class="flex_col_sm_4">
+      <app-date-filter [dateObject]="filterObject.registrationDate">
+      </app-date-filter>
+    </div>
+    <div class="flex_col_sm_2">
+      <app-dropdown-filter
+        [dropdown]="filterObject.status"
+      ></app-dropdown-filter>
+    </div>
+    <div class="flex_col_sm_2">
+      <app-dropdown-filter
+        [dropdown]="filterObject.assigned"
+      ></app-dropdown-filter>
+    </div>
+    <div class="flex_col_sm_2">
+      <h4>
+        &nbsp;
+      </h4>
+      <mat-form-field>
+        <input
+          [formControl]="filterForm.controls.vendorId"
+          placeholder="Search Vendor"
+          [matAutocomplete]="auto"
+          matInput
+        />
+        <mat-autocomplete
+          (optionSelected)="selectVendor($event)"
+          #auto="matAutocomplete"
+        >
+          <mat-option *ngFor="let vendor of vendors" [value]="vendor">
+            {{ vendor.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="flex_row">
+    <div class="flex_col_sm_10 text-center">
+      <ul class="btn_wrapper">
+        <li>
+          <button
+            filter_btn
+            mat-stroked-button
+            [disabled]="disable()"
+            (click)="resetFilter()"
+          >
+            Reset
+          </button>
+        </li>
+
+        <li>
+          <button
+            filter_btn
+            mat-raised-button
+            color="primary"
+            [disabled]="disable()"
+            (click)="filter()"
+          >
+            Filter
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="white_wrapper">
+  <table
+    mat-table
+    [dataSource]="cabs"
+    matSort
+    (matSortChange)="sortData($event)"
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        {{ getSerialNumber(i + 1) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cabBadge">
+      <!-- Added sort for cabBadge - Shivakumar A -->
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+        <span
+        [ngClass]="
+          isFilterApplied && filterForm.value.routeNo ? 'appliedFilter' : ''
+        ">Cab ID</span></th>
+      <td mat-cell *matCellDef="let element">
+         <!-- added medical cab icon class - Shivakumar A -->
+        {{ element.routeNo | checkNull }} <b class="medical_cab_symbol_option" *ngIf="element.type === medicalCabValue">&#43;</b>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cabModel">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>Model Name</th>
+      <td mat-cell *matCellDef="let element">
+        <span
+          class="view_details td-text-wrap"
+          [routerLink]="['CAB' | absolutePath, element._id]"
+        >
+          {{ element.cabModel | checkNull }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="registrationNo">
+      <th mat-header-cell *matHeaderCellDef>Registration No.</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.registrationNo | checkNull }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="seatingCapacity">
+      <th mat-header-cell *matHeaderCellDef>Seating Capacity</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.seatingCapacity | checkNull }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="vendorName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span
+          [ngClass]="
+            isFilterApplied && filterForm.value.vendorId ? 'appliedFilter' : ''
+          "
+          >Vendor Name
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <span class="td-text-wrap">{{ element.vendorName | checkNull }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span
+          [ngClass]="
+            isFilterApplied && filterForm.value.fromDate ? 'appliedFilter' : ''
+          "
+          >Registration Date
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.created | customDate }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isAssigned">
+      <th mat-header-cell *matHeaderCellDef>
+        <span
+          [ngClass]="
+            isFilterApplied && filterForm.value.assigned ? 'appliedFilter' : ''
+          "
+          >Driver Mapping Status
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.assigned?.length ? "Assigned" : "Unassigned" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.status | status | titlecase | checkNull }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button
+            mat-menu-item
+            (click)="
+              changeStatus('deleted', element._id, element.assigned?.length)
+            "
+          >
+            <mat-icon matTooltip="Archive">archive</mat-icon> Archive
+          </button>
+          <button
+            mat-menu-item
+            [routerLink]="['EDIT_CAB' | absolutePath, element._id]"
+          >
+            <mat-icon matTooltip="Edit">edit</mat-icon> Edit
+          </button>
+          <button
+            mat-menu-item
+            [ngClass]="element.status === 'blocked' ? 'ban' : 'noban'"
+            (click)="
+              changeStatus(
+                element.status === 'blocked' ? 'unblocked' : 'blocked',
+                element._id,
+                element.assigned?.length
+              )
+            "
+          >
+            <mat-icon
+              matTooltip="{{
+                element.status === 'blocked' ? 'Unblock' : 'Block'
+              }}"
+            >
+              {{ element.status === "blocked" ? "block" : "block" }}</mat-icon
+            >
+            {{ element.status === "blocked" ? "un-block" : "Block" }}
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <div class="white_wrapper" *ngIf="total === 0">
+    <h2 class="not-found">No Cab Found</h2>
+  </div>
+  <div class="white_wrapper" *ngIf="cabs.data.length">
+    <mat-paginator
+      [length]="total"
+      [pageIndex]="page - 1"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageOptions"
+      (page)="changePage($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

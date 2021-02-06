@@ -1,0 +1,218 @@
+<!-- filter -- satyam -->
+<div class="flex_row">
+    <div class="flex_col_sm_5 rowFilterBox">
+        <app-search-filter
+          [placeholder]="'Search by full name, id, email, cabId and contact no'"
+          (setSearch)="setSearch($event)"
+        >
+        </app-search-filter>
+    </div>
+    <div class="flex_col_sm_5">
+        <ul class="btn_wrapper text-right">
+          <li>
+            <app-filter-count
+              [filterCount]="appliedFilterCount"
+            ></app-filter-count>
+          </li>
+          <li>
+            <button
+              mat-raised-button
+              (click)="showFilter = !showFilter"
+              color="primary"
+            >
+              <mat-icon>filter_list</mat-icon> Filter
+            </button>
+          </li>
+          </ul>
+    </div>
+    </div>
+    <div
+      class="white_wrapper filter_wrapper"
+      [class.filter_wrapper_show]="showFilter"
+    >
+      <div class="flex_row">
+        <div class="flex_col_sm_6">
+          <app-date-filter [dateObject]="filterObject.registrationDate">
+          </app-date-filter>
+        </div>
+        <div class="flex_col_sm_3">
+          <app-dropdown-filter
+            [dropdown]="filterObject.shiftType"
+          ></app-dropdown-filter>
+        </div>
+        <div class="flex_col_sm_3">
+          <h4>
+            &nbsp;
+          </h4>
+          <mat-form-field>
+            <mat-select
+              placeholder="Shift"
+              [formControl]="filterForm.controls.shiftName"
+            >
+              <!-- <mat-option *ngFor="let item of shifts" [value]="item.shiftName">{{ item.shiftName}}</mat-option> -->
+              <!-- changes by satyam -> Includes shift timing --> 
+              <mat-option *ngFor="let item of shifts" [value]="item.shiftName"
+                >{{ item.shiftName+' '+'('+item.startShift+' - '+item.endShift+')'}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex_row">
+        <div class="flex_col_sm_10 text-center">
+          <ul class="btn_wrapper">
+            <li>
+              <button
+                filter_btn
+                mat-stroked-button
+                [disabled]="disable()"
+                (click)="resetFilter()"
+              >
+                Reset
+              </button>
+            </li>
+    
+            <li>
+              <button
+                filter_btn
+                mat-raised-button
+                color="primary"
+                [disabled]="disable()"
+                (click)="filter()"
+              >
+                Filter
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+<table mat-table [dataSource]="sosRequests" class="mt-30" matSort (matSortChange)="sortData($event)">
+
+    <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> S.No. </th>
+        <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Employee Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name | checkNull}} </td>
+    </ng-container>
+
+     <!-- Added Emp ID - Shivakumar A  -->
+     <ng-container matColumnDef="empId">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.employeeId">{{element.employeeId|checkNull}}</span>
+            <span *ngIf="element.driverId">{{element.driverId|checkNull}}</span>
+            </td>
+    </ng-container>
+
+    <!-- Added Gender - Shivakumar A  -->
+    <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef> Gender </th>
+        <td mat-cell *matCellDef="let element"> {{element?.gender | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contact">
+        <th mat-header-cell *matHeaderCellDef> Contact Number </th>
+        <td mat-cell *matCellDef="let element">{{element.mobileNo | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cabid">
+        <th mat-header-cell *matHeaderCellDef> Cab ID </th>newCabBadgeId
+        <!-- <td mat-cell *matCellDef="let element"> {{element?.roster?.cab?.cabBadge | checkNull}} </td> -->
+        <!-- Added newCabBadgeId - Shivakumar A -->
+        <td mat-cell *matCellDef="let element"> {{element?.newCabBadgeId | checkNull}} 
+             <!-- Added Medical cab - Shivakumar A -->
+        <b class="medical_cab_symbol_option" *ngIf="element?.roster?.cab?.type === medicalCabValue">&#43;</b>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cabReg">
+        <th mat-header-cell *matHeaderCellDef> Cab Registration No </th>
+        <td mat-cell *matCellDef="let element"> {{element?.roster?.cab?.registrationNo | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="driverName">
+        <th mat-header-cell *matHeaderCellDef> Driver Name </th>
+        <td mat-cell *matCellDef="let element"> {{element?.roster?.cab?.driverMapped[0].name | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="driverPhone">
+        <th mat-header-cell *matHeaderCellDef>Driver Contact Number</th>
+        <td mat-cell *matCellDef="let element"> {{element?.roster?.cab?.driverMapped[0].mobileNo | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pickup">
+        <th mat-header-cell *matHeaderCellDef> Pickup Location </th>
+        <td mat-cell *matCellDef="let element" title="{{ element?.pickUpLocation }}"> {{element?.pickUpLocation | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dropoff">
+        <th mat-header-cell *matHeaderCellDef> DropOff Location </th>
+        <td mat-cell *matCellDef="let element" title="{{ element?.roster?.officeAddress }}"> {{element?.roster?.officeAddress | checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sosLocation">
+        <th mat-header-cell *matHeaderCellDef>Sos Location </th>
+        <td mat-cell *matCellDef="let element" title="{{ element?.roster?.officeAddress }}" >
+            <a href="https://www.google.com/maps/search/?api=1&query={{element?.sosLocation?.coordinates[1]}},{{element?.sosLocation?.coordinates[0]}}"
+                target="_blank">
+                {{element?.sosLocation?.address | checkNull}}
+            </a></td>
+    </ng-container>
+
+    <!-- Removed Messages -  Shivakumar A -->
+
+    <!-- <ng-container matColumnDef="message">
+        <th mat-header-cell *matHeaderCellDef>Message </th>
+        <td mat-cell *matCellDef="let element"> {{element?.query | checkNull}} </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status </th>
+        <td mat-cell *matCellDef="let element"> {{element?.status |requestStatus | checkNull}} </td>
+    </ng-container>
+
+    <!-- Added Created Time -  Shivakumar A -->
+    <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef> Raised At </th>
+        <td mat-cell *matCellDef="let element"> {{element?.created | date:'short'}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- marksafed -- satyam -->
+            <!-- <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu"
+                [disabled]="element?.status==1 || element?.status==5">
+                <mat-icon>more_vert</mat-icon>
+            </button> -->
+            <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu"
+                [disabled]="element?.status==1 || element?.status==5 || element?.status==3">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <!-- <button mat-menu-item (click)="changeStatus('reject',element._id)">
+                    <mat-icon matTooltip="Delete">delete</mat-icon> Reject
+                </button> -->
+                <button mat-menu-item (click)="changeStatus('resolve',element._id)">
+                    <mat-icon matTooltip="Resolve">check</mat-icon> Resolve
+                </button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<div class="white_wrapper" *ngIf="total===0">
+    <h2 class="not-found">No Data Found</h2>
+</div>
+<div class="white_wrapper" *ngIf="sosRequests.data.length">
+    <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+        (page)="changePage($event)">
+    </mat-paginator>
+</div>

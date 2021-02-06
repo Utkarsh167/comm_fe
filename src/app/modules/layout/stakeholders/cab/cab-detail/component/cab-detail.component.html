@@ -1,0 +1,261 @@
+<div class="custom_container">
+    <div class="white_wrapper">
+        <h2 class="heading">Cab Detail</h2>
+
+        <div class="flex_row">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="javascript:void(0)">Stakeholders</a>
+                </li>
+                <li>
+                    <a routerLink="/admin/stakeholders/cab">Cab</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="active">Detail</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="form_wrapper" *ngIf="cab">
+            <div class="flex_row">
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Model Name</label>
+                        <span class="show_label">{{cab.cabModel}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Registration Number</label>
+                        <span class="show_label">{{cab.registrationNo}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Vehicle Type</label>
+                        <span class="show_label">{{cab.type}}
+                            <!-- Added Medical cab icon - Shivakumar A -->
+                            <b class="medical_cab_symbol_option" *ngIf="cab.type === medicalCabValue">&#43;</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex_row">
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Vendor Name</label>
+                        <span class="show_label">{{cab.vendor?.name}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Color</label>
+                        <span class="show_label">{{cab.color}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Capacity</label>
+                        <span class="show_label">{{cab.seatingCapacity}}</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="flex_row">
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">State Permit No.</label>
+                        <span class="show_label">{{cab.statePermitNumber}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">All Inida Permit No.</label>
+                        <span class="show_label">{{cab.countryPermitNumber}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Fuel Type</label>
+                        <span class="show_label">{{getViewValue('fuelType')}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex_row">
+
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Transmission Type</label>
+                        <span class="show_label">{{getViewValue('transmissionType')}}</span>
+                    </div>
+                </div>
+
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <!-- <label class="form_label">Cab Badge Number</label> -->
+                        <!-- changed to Cab ID - Shivakumar A-->
+                        <label class="form_label">Cab ID</label>
+                        <span class="show_label">{{cab.routeNo|checkNull}}</span>
+                    </div>
+                </div>
+
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Driver Cum/Owner</label>
+                        <span class="show_label">{{getViewValue('driverOwner','radioOption')}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex_row">
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Driver Only</label>
+                        <span class="show_label">{{getViewValue('driverOnly','radioOption')}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">AC</label>
+                        <span class="show_label">{{getViewValue('ac','radioOption')}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Panic Button</label>
+                        <span class="show_label">{{getViewValue('panicButton','radioOption')}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex_row">
+
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Transmission Type</label>
+                        <span class="show_label">{{getViewValue('transmissionType')}}</span>
+                    </div>
+                </div>
+
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Spare Wheel</label>
+                        <span class="show_label">{{getViewValue('spareWheel','radioOption')}}</span>
+                    </div>
+                </div>
+
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">First Aid Kit</label>
+                        <span class="show_label">{{getViewValue('firstAidKit','radioOption')}}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flex_row">
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Torch & Umbrellas</label>
+                        <span class="show_label">{{getViewValue('torchAmbrella','radioOption')}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Fire Extingusher</label>
+                        <span class="show_label">{{getViewValue('fireExtingusher','radioOption')}}</span>
+                    </div>
+                </div>
+
+                <div class="flex_col_sm_3">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">VEH Condition Exterior And Exterior</label>
+                        <span class="show_label">{{getViewValue('interiorExterior','radioOption')}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="flex_row">
+
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Driver Mapping</label>
+                        <span class="show_label" *ngIf="!cab.driverMapped?.length">Unassigned</span>
+                        <table *ngIf="cab.driverMapped?.length">
+                            <tr>
+                                <th>Driver</th>
+                                <th>Shift</th>
+                            </tr>
+                            <tr *ngFor="let driver of cab.driverMapped">
+                                <td><a class="view_details"
+                                        [routerLink]="['DRIVER'|absolutePath,driver._id]">{{driver.name}}</a></td>
+                                <td>{{driver.startShift|date:'shortTime'}} - {{driver.endShift|date:'shortTime'}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="flex_row aggrement">
+                <div class="flex_col_sm_3" *ngFor="let doc of docs">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">{{doc.viewValue}}</label>
+                        <span class="show_label">
+                            <a target="_blank" [href]="cab[doc.value]" *ngIf="cab[doc.value]">
+                                <figure class="sm_img_preview">
+                                    <img [src]="(cab[doc.value] | fileType)">
+                                </figure>
+                            </a>
+                            <ng-container *ngIf="!cab[doc.value]">
+                                {{'N/A'}}
+                            </ng-container>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex_row">
+                <div class="flex_col_sm_10">
+                    <div class="form_filed_wrapper_details text-center">
+                        <ul class="btn_wrapper">
+                            <li> 
+                                    <button mat-raised-button color="primary" (click)="changeStatus('deleted', cab._id, cab.driverMapped.length)">Archive</button>
+                                    <button mat-raised-button color="primary"
+                                    (click)="
+                                    changeStatus(
+                                        cab.status === 'blocked' ? 'unblocked' : 'blocked',
+                                        cab._id, cab.driverMapped.length
+                                    )
+                                    ">
+                                  
+                                    {{ cab.status === "blocked" ? "un-block" : "Block" }}
+                                  </button>
+                                <button mat-raised-button [routerLink]="['EDIT_CAB'|absolutePath,cab._id]"
+                                    color="primary">Edit</button> 
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

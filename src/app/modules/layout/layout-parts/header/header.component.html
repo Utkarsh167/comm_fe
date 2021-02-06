@@ -1,0 +1,268 @@
+<header>
+  <div class="inner_header">
+    <div class="brand-col">
+      <figure class="brand_wrap">
+        <img src="assets/images/new-logo.png" alt="Flet Management" />
+      </figure>
+    </div>
+
+    <div class="nav_wrapper">
+      <nav>
+        <ul *ngIf="adminRole == 'sub'">
+          <li>
+            <a
+              [routerLink]="'DASHBOARD' | absolutePath"
+              routerLinkActive="active"
+              >Dashboard</a
+            >
+          </li>
+
+          <ng-template [ngxPermissionsOnly]="['rtls']">
+            <li>
+              <a [routerLink]="'RTLS' | absolutePath" routerLinkActive="active"
+                >Live</a
+              >
+            </li>
+          </ng-template>
+
+          <ng-template
+            [ngxPermissionsOnly]="['employee', 'cab', 'driver', 'vendor']"
+          >
+            <li>
+              <a
+                [routerLink]="'STAKEHOLDERS' | absolutePath"
+                routerLinkActive="active"
+                >Stakeholders</a
+              >
+            </li>
+          </ng-template>
+
+          <ng-template [ngxPermissionsOnly]="['route']">
+            <li>
+              <a [routerLink]="'ROUTE' | absolutePath" routerLinkActive="active"
+                >Route</a
+              >
+            </li>
+          </ng-template>
+
+          <ng-template [ngxPermissionsOnly]="['roster']">
+            <li>
+              <a
+                [matMenuTriggerFor]="menu1"
+                [ngClass]="{
+                  active:
+                    _router.url === ('CAB_ROUTE_MAP_LIST' | absolutePath) ||
+                    _router.url === ('ROSTER_LIST' | absolutePath)
+                }"
+                >Roster</a
+              >
+              <mat-menu #menu1="matMenu">
+                <button
+                  mat-menu-item
+                  [routerLink]="'CAB_ROUTE_MAP' | absolutePath"
+                >
+                  Assign Cab
+                </button>
+                <button mat-menu-item [routerLink]="'ROSTER' | absolutePath">
+                  Roster
+                </button>
+              </mat-menu>
+            </li>
+          </ng-template>
+
+          <!-- <ng-template [ngxPermissionsOnly]="['trip']">
+            <li><a
+              routerLinkActive="active">Trip History</a></li>
+          </ng-template> -->
+
+          <!-- Added Link to Trip History - Shivakumar A -->
+          <ng-template [ngxPermissionsOnly]="['trip']">
+            <li><a 
+              [routerLink]="'TRIP_HISTORY' | absolutePath"
+              routerLinkActive="active">Trip History</a></li>
+          </ng-template>
+          <!-- <ng-template [ngxPermissionsOnly]="['audit']">
+            <li><a routerLinkActive="active">Audit Log</a></li>
+          </ng-template> -->
+
+          <!-- Added Link to AuditLogs - Shivakumar A -->
+          <ng-template [ngxPermissionsOnly]="['audit']">
+            <li><a [routerLink]="'AUDITS' | absolutePath"
+               routerLinkActive="active">Audit Log</a></li>
+          </ng-template>
+
+          <!-- <ng-template [ngxPermissionsOnly]="['request']">
+            <li>
+              <a
+                [routerLink]="'REQUESTS' | absolutePath"
+                routerLinkActive="active"
+                >Requests</a
+              >
+            </li>
+          </ng-template> -->
+          <!-- Added Badge for Sub Admin - Shivakumar A -->
+          <ng-template [ngxPermissionsOnly]="['request']">
+            <li>
+              <div>
+                <a [routerLink]="'REQUESTS' | absolutePath" routerLinkActive="active" ><span *ngIf="TotalPendingData != null && TotalPendingCount > 0" matBadgeSize="small" matBadge={{TotalPendingCount}} matBadgeOverlap="true" matBadgeColor="warn">Requests</span></a>
+                <a [routerLink]="'REQUESTS' | absolutePath" routerLinkActive="active" ><span *ngIf="TotalPendingData != null && TotalPendingCount == 0">Requests</span></a>
+              </div>
+            </li>
+          </ng-template>
+
+          <ng-template [ngxPermissionsOnly]="['shift']">
+            <li>
+              <a [routerLink]="'SHIFT' | absolutePath" routerLinkActive="active"
+                >User's Shift</a
+              >
+            </li>
+          </ng-template>
+        </ul>
+
+        <ul *ngIf="adminRole == 'admin'">
+          <li>
+            <a
+              [routerLink]="'DASHBOARD' | absolutePath"
+              routerLinkActive="active"
+              >Dashboard</a
+            >
+          </li>
+
+          <li>
+            <a [routerLink]="'RTLS' | absolutePath" routerLinkActive="active"
+              >Live</a
+            >
+          </li>
+
+          <li>
+            <a
+              [routerLink]="'STAKEHOLDERS' | absolutePath"
+              routerLinkActive="active"
+              >Stakeholders</a
+            >
+          </li>
+
+          <li>
+            <a [routerLink]="'ROUTE' | absolutePath" routerLinkActive="active"
+              >Route</a
+            >
+          </li>
+
+          <li>
+            <a
+              [matMenuTriggerFor]="menu1"
+              [ngClass]="{
+                active:
+                  _router.url === ('CAB_ROUTE_MAP_LIST' | absolutePath) ||
+                  _router.url === ('ROSTER_LIST' | absolutePath)
+              }"
+              >Roster</a
+            >
+            <mat-menu #menu1="matMenu">
+              <button
+                mat-menu-item
+                [routerLink]="'CAB_ROUTE_MAP_LIST' | absolutePath"
+                routerLinkActive="active"
+              >
+                Assign Cab
+              </button>
+              <button
+                mat-menu-item
+                [routerLink]="'ROSTER_LIST' | absolutePath"
+                routerLinkActive="active"
+              >
+                Roster
+              </button>
+            </mat-menu>
+          </li>
+
+          <li>
+            <a
+              [routerLink]="'TRIP_HISTORY' | absolutePath"
+              routerLinkActive="active"
+              >Trip History</a
+            >
+          </li>
+
+          <li>
+            <a [routerLink]="'AUDITS' | absolutePath" routerLinkActive="active"
+              >Audit Log</a
+            >
+          </li>
+
+          <li>
+            <!-- <a
+              [routerLink]="'REQUESTS' | absolutePath"
+              routerLinkActive="active"
+              >Requests</a
+            > -->
+            <!-- Added Badge - Shivakumar A -->
+            <div>
+              <a [routerLink]="'REQUESTS' | absolutePath" routerLinkActive="active" ><span *ngIf="TotalPendingData != null && TotalPendingCount > 0" matBadgeSize="small" matBadge={{TotalPendingCount}} matBadgeOverlap="true" matBadgeColor="warn">Requests</span></a>
+              <a [routerLink]="'REQUESTS' | absolutePath" routerLinkActive="active" ><span *ngIf="TotalPendingData != null && TotalPendingCount == 0">Requests</span></a>
+            </div>
+          </li>
+
+          <li>
+            <a [routerLink]="'SHIFT' | absolutePath" routerLinkActive="active"
+              >User's Shift</a
+            >
+          </li>
+
+          <li>
+            <a
+              [routerLink]="'SUBADMIN' | absolutePath"
+              routerLinkActive="active"
+              >Sub Admin</a
+            >
+          </li>
+          <!-- billing module -- satyam -->
+          <!-- <li>
+            <a
+              [routerLink]="'BILLING' | absolutePath"
+              routerLinkActive="active"
+              >Billing</a
+            >
+          </li> -->
+        </ul>
+      </nav>
+    </div>
+
+    <ng-template [ngxPermissionsOnly]="['notification']">
+      <div
+        class="setting notification"
+        [routerLink]="'ADMIN_NOTIFICATION' | absolutePath"
+        routerLinkActive="active"
+      >
+        <figure class="setting_img">
+          <img src="assets/images/notification.svg" alt="Notification" />
+        </figure>
+      </div>
+    </ng-template>
+
+    <div
+      class="setting notification"
+      *ngIf="adminRole == 'admin'"
+      [routerLink]="'ADMIN_NOTIFICATION' | absolutePath"
+      routerLinkActive="active"
+    >
+      <figure class="setting_img">
+        <img src="assets/images/notification.svg" alt="Notification" />
+      </figure>
+    </div>
+
+    <div class="setting">
+      <figure class="setting_img" [matMenuTriggerFor]="menu">
+        <span>{{ adminName | customName }}</span>
+      </figure>
+    </div>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/admin/profile">My Profile</button>
+      <button mat-menu-item routerLink="/admin/change-password">
+        Change Password
+      </button>
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </div>
+</header>

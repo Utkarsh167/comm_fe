@@ -1,0 +1,110 @@
+<div class="custom_container">
+    <div class="white_wrapper">
+        <h2 class="heading">Profile</h2>
+        <div class="form_wrapper">
+            <div class="flex_row bg-btm">
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Name</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.name |checkNull}}</span>
+                    </div>
+                </div>
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Email</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.email |checkNull}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex_row bg-btm">
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Address</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.companyAddress?.address |checkNull}}</span>
+                    </div>
+                </div>
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">CRF/Month (Employee)</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.crfLimitMonth |checkNull}}</span>
+                    </div>
+                    <!-- <div class="form_filed_wrapper_details">
+                        <label class="form_label">lat</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.companyAddress?.coordinates[1] |checkNull}}</span>
+                    </div> -->
+                </div>
+            </div>
+            <!-- crfTimings -- satyam -->
+            <div class="flex_row bg-btm">
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <!-- hrs -- duration -- satyam -->
+                        <label class="form_label">Login Cutoff Duration</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.loginCutoff |checkNull}} hrs</span>
+                    </div>
+                </div>
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <!-- hrs -- duration -- satyam -->
+                        <label class="form_label">Logout Cutoff Duration</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.logoutCutoff |checkNull}} hrs</span>
+                    </div>
+                    <!-- <div class="form_filed_wrapper_details">
+                        <label class="form_label">lat</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">{{profileData?.companyAddress?.coordinates[1] |checkNull}}</span>
+                    </div> -->
+                </div>
+            </div>
+            <div class="flex_row slots">
+                <div class="flex_col_sm_3 timeSlot" *ngFor="let slot of profileData?.shiftSlot">
+                    <div class="form_filed_wrapper_header">
+                        <label class="form_label">Shift Name</label>
+                        <span _ngcontent-dcb-c7="" class="show_label">
+                            {{slot?.shiftName}}
+                        </span>
+                    </div>
+                    <div class="flex_row">
+
+                        <div class="flex_col_sm_5">
+                            <div class="form_filed_wrapper_details">
+                                <label class="form_label">Shift Start Time</label>
+                                <!-- <span _ngcontent-dcb-c7="" class="show_label">{{slot?.startShift | hours24To12 }}</span> -->
+                                <!-- 24 hrs format - Shivakumar A -->
+                                <span _ngcontent-dcb-c7="" class="show_label">{{slot.startShift}}</span>
+
+                            </div>
+                        </div>
+                        <div class="flex_col_sm_5">
+                            <div class="form_filed_wrapper_details">
+                                <label class="form_label">Shift End Time</label>
+                                <!-- <span _ngcontent-dcb-c7="" class="show_label">{{slot?.endShift |  hours24To12}}</span> -->
+                                <!-- 24 hrs format - Shivakumar A -->
+                                <span _ngcontent-dcb-c7="" class="show_label">{{slot.endShift}}</span>
+
+                            </div>
+                        </div>
+                        <div class="flex_col_sm_10">
+                            <div class="form_filed_wrapper_details weekend">
+                                <label class="form_label">Weekoffs</label>
+                                <span _ngcontent-dcb-c7="" class="show_label" *ngFor="let week of slot.weekOff">
+                                    {{week |viewWeekends}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex_row" *ngIf="adminRole==='admin'">
+                <div class="flex_col_sm_10">
+                    <div class="form_filed_wrapper_details text-center">
+                        <ul class="btn_wrapper">
+                            <li> <button mat-raised-button [routerLink]="'./edit'" color="primary">Edit</button> </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+.mat-dialog-actions {
+    justify-content: center;
+    margin-bottom: 0px;
+    align-items: center;
+    display: flex;
+    button {
+        min-width: 100px;
+        &+button {
+            margin-left: 20px;
+        }
+    }
+}
+
+.btn_wrapper li .mat-raised-button.mat-primary {
+    background-color: #79f2c0;
+    color: #091e42;
+}
+
+// Added medical cab symbol background - Shivakumar
+.medical_cab_symbol {
+    background:  url("assets/images/medicalCab.png")  left / contain no-repeat;
+    white-space: nowrap;
+    background-position: 90% 50%; 
+  }
+  
+// Added medical_cab_symbol_option style - Shivakumar
+.medical_cab_symbol_option {
+    float: right; 
+    margin-top: 15px;
+}

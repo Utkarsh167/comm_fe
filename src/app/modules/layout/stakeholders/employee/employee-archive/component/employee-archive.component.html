@@ -1,0 +1,112 @@
+<div class="white_wrapper action">
+  <div class="flex_row">
+    <ul class="breadcrumb">
+      <li>
+        <a href="javascript:void(0)">Stakeholders</a>
+      </li>
+      <li>
+        <a routerLink="/admin/stakeholders/employees">Employee</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" class="active">Archived</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="white_wrapper">
+  <table mat-table [dataSource]="employees" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>Full Name </th>
+      <td mat-cell *matCellDef="let element">{{element.name|checkNull}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="empId">
+      <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+      <td mat-cell *matCellDef="let element"><span class="td-text-wrap">{{element.employeeId|checkNull}}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element"> <span>{{element.email|checkNull}}</span> </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="contactNo">
+      <th mat-header-cell *matHeaderCellDef> Contact No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.mobileNo|checkNull}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+        <span [ngClass]="(isFilterApplied && filterForm.value.fromDate)?'appliedFilter':''">Registration Date
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <span matTooltip="Filters applied" matTooltipPosition="below">{{element.created|customDate}}</span>
+      </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="shiftName">
+      <th mat-header-cell *matHeaderCellDef>Shift Name </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.shift | checkNull}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startTime">
+      <th mat-header-cell *matHeaderCellDef>Shift Start Time </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.shiftStartTime | shiftTime}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endTime">
+      <th mat-header-cell *matHeaderCellDef>Shift End Time </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.shiftEndTime | shiftTime}}
+      </td>
+    </ng-container>
+
+    <!-- reasonForComment -- satyam -->
+    <ng-container matColumnDef="comment">
+      <th mat-header-cell *matHeaderCellDef>Reason </th>
+      <td mat-cell *matCellDef="let element"><span title="{{element?.comment}}" class="td-text-wrap">
+          {{element?.comment | checkNull}} </span></td>
+    </ng-container>
+
+    <ng-container matColumnDef="pickupLocation">
+      <th mat-header-cell *matHeaderCellDef>Pick Up Location </th>
+      <td mat-cell *matCellDef="let element"><span class="td-text-wrap"
+          title="{{element?.pickup?.address?.fullAddress}}">
+          {{element?.pickup?.address?.fullAddress|checkNull}} </span> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dropLocation">
+      <th mat-header-cell *matHeaderCellDef>Drop off Location </th>
+      <td mat-cell *matCellDef="let element"><span title="{{element?.dropoff?.address}}" class="td-text-wrap">
+          {{element?.dropoff?.address|checkNull}} </span></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div class="white_wrapper" *ngIf="total===0">
+    <h2 class="not-found">No Data Found</h2>
+  </div>
+  <div class="white_wrapper" *ngIf="employees.data.length">
+    <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+      (page)="changePage($event)">
+    </mat-paginator>
+  </div>
+</div>

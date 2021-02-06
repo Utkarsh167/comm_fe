@@ -1,0 +1,240 @@
+<div class="parentWrapper">
+    <div class="white_wrapper action">
+        <!-- <div class="flex_row">
+            <div class="flex_col_sm_5 rowFilterBox">
+                <app-search-filter [placeholder]="'Search by user name'" (setSearch)="setSearch($event)">
+                </app-search-filter>
+            </div>
+        </div> -->
+        <div class="flex_row">
+            <div class="flex_col_sm_5">
+                <ul class="btn_wrapper text-right">
+                    <li style="margin-top: 10px;">
+                        <a href="javascript:void(0)" class="active" style="font-size: medium;">Billing</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex_col_sm_5" style="margin-left: 20%;">
+            
+                <ul class="btn_wrapper text-right">
+                    <!-- new rosters flow -- satyam -->
+                <mat-form-field style="width:25%">
+                    <input
+                      matInput
+                      readonly
+                      [formControl]="filterObject.registrationDate.fromDate"
+                      [matDatepicker]="picker1"
+                      (click)="picker1.open()"
+                      [max] = "maxDateFrom"
+                      placeholder="From Date"
+                      (dateChange)="dateChange($event)"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker1"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+    
+                  <mat-form-field style="width:25%; margin-left: 20px;">
+                    <input
+                      matInput
+                      readonly
+                      [formControl]="filterObject.registrationDate.toDate"
+                      [matDatepicker]="picker" 
+                      (click)="picker.open()"
+                      [max] = "maxDateTo"
+                      placeholder="To Date"
+                      (dateChange)="dateChangeTo($event)"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+    
+                    <li> <button mat-raised-button (click)="downloadReport()" color="primary">
+                      <mat-icon>arrow_downward</mat-icon> Download Report
+                    </button> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="white_wrapper filter_wrapper" [class.filter_wrapper_show]="showFilter">
+        <div class="flex_row">
+            <div class="flex_col_sm_6">
+                <app-date-filter [dateObject]="filterObject.registrationDate">
+                </app-date-filter>
+            </div>
+        </div>
+        <div class="flex_row">
+            <div class="flex_col_sm_10 text-center">
+
+                <ul class="btn_wrapper">
+                    <li> <button filter_btn mat-stroked-button [disabled]="disable()" (click)="resetFilter()">
+                          Reset
+                      </button>
+                    </li>
+
+                    <li>
+
+                        <button filter_btn mat-raised-button color="primary" [disabled]="disable()" (click)="filter()">
+                          Filter
+                      </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="white_wrapper">
+        <table mat-table [dataSource]="billing" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="vendor">
+                <th mat-header-cell *matHeaderCellDef>Vendor</th>
+                <td mat-cell *matCellDef="let element"><span class="td-text-wrap">{{element.vendor|checkNull}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cab">
+                <th mat-header-cell *matHeaderCellDef>Cab Id</th>
+                <td mat-cell *matCellDef="let element"> <span>{{element.cab|checkNull}}</span> </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="shiftType">
+                <th mat-header-cell *matHeaderCellDef>Shift Type</th>
+                <td mat-cell *matCellDef="let element"> 
+                    <span *ngIf="element.tripType != 'empty'" >{{element.shiftType | checkNull}}</span>
+                    <span *ngIf="element.tripType == 'empty'">-</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="shiftTime">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>Shift Time</th>
+                <td mat-cell *matCellDef="let element">
+                    <!-- {{element.createdAt | date:'shortTime'}} -->
+                    <!-- 24 hr format - Shivakumar A -->
+                    {{ element.shiftTime }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tripType">
+                <th mat-header-cell *matHeaderCellDef>Trip Type</th>
+                <td mat-cell *matCellDef="let element" >
+                    {{element.tripType | checkNull}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="startLocation">
+                <th mat-header-cell *matHeaderCellDef>Start Location</th>
+                <td mat-cell *matCellDef="let element" >
+                    <span *ngIf="element.shiftType == 'login' && element.tripType!='empty'">{{element.route.employees[0].address | checkNull}}</span>
+                    <span *ngIf="element.shiftType == 'logout' && element.tripType!='empty'">{{element.route.startLocation | checkNull}}</span>
+                    <span *ngIf="element.tripType =='empty'">-</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="endLocation">
+                <th mat-header-cell *matHeaderCellDef>End Location</th>
+                <td mat-cell *matCellDef="let element" >
+                    <span *ngIf="element.shiftType == 'login' && element.tripType!='empty'">{{element.route.endLocation | checkNull}}</span>
+                    <span *ngIf="element.shiftType == 'logout'&& element.tripType!='empty'">{{element.route.employees[element.route.employees.length -1].address | checkNull}}</span>
+                    <span *ngIf="element.tripType =='empty'">-</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rosterDate">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.rosterDate | customDate}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="white_wrapper" *ngIf="total===0">
+            <h2 class="not-found">No Data Found</h2>
+        </div>
+        <div class="white_wrapper" *ngIf="billing.data.length">
+            <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="pageOptions" (page)="changePage($event)">
+            </mat-paginator>
+        </div>
+    </div>
+    <!--
+<div class="white_wrapper">
+    <table mat-table [dataSource]="audits" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef>User Name</th>
+            <td mat-cell *matCellDef="let element"><span class="td-text-wrap">{{element.userName|checkNull}}</span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <td mat-cell *matCellDef="let element"> <span>{{element.adminType|checkNull}}</span> </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt | date |checkNull}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Time</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.createdAt|date:'shortTime'}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="activity">
+            <th mat-header-cell *matHeaderCellDef>Activity</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.message | checkNull}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.actionType | checkNull}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="module">
+            <th mat-header-cell *matHeaderCellDef>Section/Module</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.moduleName | checkNull}}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="white_wrapper" *ngIf="total===0">
+        <h2 class="not-found">No Data Found</h2>
+    </div>
+    <div class="white_wrapper" *ngIf="audits.data.length">
+        <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+            (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+</div> -->
+</div>

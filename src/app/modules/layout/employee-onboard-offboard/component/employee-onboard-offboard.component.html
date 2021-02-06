@@ -1,0 +1,64 @@
+<!-- <div class="empList">
+    <h4>Employee onboarded</h4>
+    <ul>
+        <li *ngFor="let onBoard of empOnboardedData">
+            <div class="boarddata">
+                {{onBoard?.route?.employees?.name}} ({{onBoard?.route?.employees?.employeeId}}) Onboarded safely on cab
+                No <span>{{onBoard?.cab.registrationNo}}</span>
+            </div>
+            <!-- <p>1 min</p> -->
+            <!-- <p>{{onBoard?.updatedAt | date:'shortTime'}}</p> -->
+        <!-- </li>
+        <li *ngIf="!empOnboardedData?.length">No Data Found</li>
+    </ul>
+</div> -->
+
+
+<!-- <div class="empList">
+    <h4>Employee Offboarded</h4>
+    <ul>
+        <li *ngFor="let offBoard of empOffboardedData">
+            <div class="boarddata">
+                {{offBoard?.route?.employees?.name}} ({{offBoard?.route?.employees?.employeeId}}) Offboarded safely on
+                cab
+                No <span>{{offBoard?.cab.registrationNo}}</span>
+            </div>
+             <p>1 min</p> -->
+        <!-- </li>
+        <li *ngIf="!empOffboardedData?.length">No Data Found</li>
+    </ul>
+</div>  -->
+
+<!-- Show onTime Trip Status For Each Trip - Shivakumar A -->
+
+<div class="empList" *ngFor = "let each of tripOnTime">
+
+        <h4>Shift Name: {{each._id.shiftName}}</h4>
+    <div class="flex_col_sm_8">
+        <ul class="listData"> 
+            <li>
+                <div class="circularBar">
+                    <div class="circlereport">
+                        <h6>{{(each.count/each.totalTrips) * 100 | number:'1.0-0' }} %</h6>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <h6>{{each.count}}</h6>
+                <span>On Time</span>
+                </div>
+                
+            </li>
+            <li>
+            <div>
+                <h6>{{each.totalTrips}}</h6>
+            <span>Total Cabs</span>
+            </div></li>
+            </ul>
+
+        </div>        
+        </div>
+        <div class="empList" *ngIf="!tripOnTime?.length">
+            <h4>No Data Found</h4>
+        </div>

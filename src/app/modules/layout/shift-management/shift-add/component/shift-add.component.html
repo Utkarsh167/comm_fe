@@ -1,0 +1,118 @@
+<div class="custom_container">
+    <div class="white_wrapper">
+        <h2 class="heading">{{employeeId? 'Edit' : 'Add'}} Shift</h2>
+        <div class="flex_row">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="javascript:void(0)">Shift Management</a>
+                </li>
+                <li>
+                    <a routerLink="/admin/shift/list">List</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="active">{{employeeId? 'Edit' : 'Add'}}</a>
+                </li>
+            </ul>
+        </div>
+        <form [formGroup]="shiftForm" (ngSubmit)="editShift()">
+            <div class="form_wrapper">
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Employee ID</mat-label>
+                                <input formControlName="employeeId" readonly matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Employee Name</mat-label>
+                                <input formControlName="name" readonly matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex_row">
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="picker1" formControlName="validFrom" [min]="todayDate" [max]="shiftForm.value.validTill" (click)="picker1.open()" placeholder="From Date" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error>{{getControl('validFrom')|validate:'Valid From'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <input #toDate matInput formControlName="validTill" [min]="shiftForm.value.validFrom" [matDatepicker]="picker2" (click)="picker2.open()" placeholder="To Date" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                                <mat-error>{{getControl('validTill')|validate:'Valid To'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Employee Email</mat-label>
+                                <input formControlName="email" readonly matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-select formControlName="shiftName" placeholder="Select Shif">
+                                    <mat-option *ngFor="let shift of allShifts" [value]="shift.shiftName">
+                                        <!-- shift update - satyam -->
+                                        {{ shift.shiftName+' '+'('+shift.startShift+' - '+shift.endShift+')'}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('shift')|validate:'Shift'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row weekend">
+                    <mat-label>Weekends</mat-label>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_3">
+                        <div class="form_filed_wrapper">
+                            <div>
+                                <mat-checkbox style="margin-right:20px" (change)="changeWeekOff($event.checked,day.value)" [checked]="day.checked" *ngFor="let day of allWeekends" [value]="day.value">
+                                    {{day?.viewValue}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_10">
+                        <div class="form_filed_wrapper text-center">
+                            <ul class="btn_wrapper">
+                                <li> <button mat-raised-button type="button" [routerLink]="'SHIFT_LISTS'|absolutePath">Cancel</button>
+                                </li>
+                                <li> <button mat-raised-button color="primary">{{'Update'}}</button> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

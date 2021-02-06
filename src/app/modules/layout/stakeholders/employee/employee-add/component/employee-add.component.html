@@ -1,0 +1,216 @@
+<div class="custom_container">
+    <div class="white_wrapper">
+        <h2 class="heading">{{ employeeId ? "Update" : "Add" }} Employee</h2>
+        <div class="flex_row">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="javascript:void(0)">Stakeholders</a>
+                </li>
+                <li>
+                    <a routerLink="/admin/stakeholders/employees">Employee</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="active">{{ employeeId ? "Edit" : "Add" }}</a>
+                </li>
+            </ul>
+        </div>
+        <!-- @Utkarsh 16/march Removed disable from empname id and number -->
+        <form [formGroup]="employeeForm" #form="ngForm" (ngSubmit)="addEmployee()">
+            <div class="form_wrapper">
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <!-- <mat-form-field appearance="outline" [class.disabled]="employeeId"> -->
+                            <mat-form-field appearance="outline">
+                                <mat-label>Employee Name</mat-label>
+                                <!-- <input formControlName="name" matInput [readonly]="employeeId" /> -->
+                                <input formControlName="name" matInput />
+                                <mat-error>{{ getControl("name") | validate: "Employee Name" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <!-- <mat-form-field appearance="outline" [class.disabled]="employeeId"> -->
+                            <mat-form-field appearance="outline">
+                                <mat-label>Employee ID</mat-label>
+                                <!-- <input formControlName="employeeId" matInput [readonly]="employeeId" /> -->
+                                <input formControlName="employeeId" matInput />
+                                <mat-error>{{ getControl("employeeId") | validate: "Employee ID" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <!-- disable field for edit - satyam -->
+                    <div *ngIf="employeeId ? true : false" class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="true">
+                                <mat-label>Email</mat-label>
+                                <input formControlName="email" matInput [readonly]="true" />
+                                <mat-error>{{ getControl("email") | validate: "Email" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- disable field for edit - satyam -->
+                    <div *ngIf="employeeId ? false : true" class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="false">
+                                <mat-label>Email</mat-label>
+                                <input formControlName="email" matInput [readonly]="false" />
+                                <mat-error>{{ getControl("email") | validate: "Email" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <!-- <mat-form-field appearance="outline" [class.disabled]="employeeId"> -->
+                            <mat-form-field appearance="outline">
+
+                                <mat-label>Contact Number</mat-label>
+                                <!-- <input formControlName="mobileNo" numberOnly matInput [readonly]="employeeId" />                                 -->
+                                <input formControlName="mobileNo" numberOnly matInput />
+                                <mat-error>{{ getControl("mobileNo") | validate: "Contact Number":"digits" }}
+                                </mat-error>
+                                <mat-error *ngIf="isUniqueMsg">{{ isUniqueMsg }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId">
+
+                                <mat-label>Select Shift</mat-label>
+                                <mat-select formControlName="shift" placeholder="Select Shift" [disabled]="employeeId">
+
+                                    <mat-option *ngFor="let shift of allShifts" [value]="shift.shiftName">
+                                        <!-- <mat-option *ngFor="let item of shifts" [value]="shift.shiftName">{{ shift.shiftName}}</mat-option> -->
+                                        <!-- changes by satyam -> Includes shift timing -->
+                                        {{ shift.shiftName+' '+'('+shift.startShift+' - '+shift.endShift+')'}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{ getControl("shift") | validate: "Shift" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper search">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId"
+                                [ngClass]="isAddress ? 'mat-form-field-invalid' : ''">
+                                <mat-label>Search Location</mat-label>
+                                <input matInput appGooglePlaces appNospace formControlName="fullAddress"
+                                    [readonly]="employeeId" class="textbox" (blur)="checkLocation()"
+                                    placeholder="Search Location" (selectAddress)="setAddress($event)" />
+                                <!-- <mat-error>{{getControl('fullAddress')|validate:'Address'}}</mat-error> -->
+                            </mat-form-field>
+                            <mat-icon matPrefix class="searchPanel">search</mat-icon>
+                            <mat-error class="addrError" *ngIf="isAddress">{{ "Please enter valid address " }}
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId">
+                                <mat-label>Street Name</mat-label>
+                                <input formControlName="roadName" [readonly]="employeeId" appNospace matInput />
+                                <!-- <mat-error>{{getControl('roadName')|validate:'Road Name'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId">
+                                <mat-label>City</mat-label>
+                                <input formControlName="city" [readonly]="employeeId" appNospace matInput />
+                                <!-- <mat-error>{{getControl('city')|validate:'City'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId">
+                                <mat-label>State</mat-label>
+                                <input formControlName="state" [readonly]="employeeId" appNospace matInput />
+                                <!-- <mat-error>{{getControl('state')|validate:'City'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId">
+                                <mat-label>House No.</mat-label>
+                                <input formControlName="houseNo" [readonly]="employeeId" appNospace matInput />
+                                <!-- <mat-error>{{getControl('houseNo')|validate:'House No.'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline" [class.disabled]="employeeId">
+                                <mat-label>Landmark</mat-label>
+                                <input formControlName="landMark" [readonly]="employeeId" appNospace matInput />
+                                <!-- <mat-error>{{getControl('landMark')|validate:'Landmark'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper gender">
+                            <label class="form_label">Gender</label>
+                            <mat-radio-group formControlName="gender">
+                                <mat-radio-button *ngFor="let gender of genders" [value]="gender.value">
+                                    {{ gender.viewValue }}
+                                </mat-radio-button>
+                                <mat-error *ngIf="form.submitted && getControl('gender').invalid">
+                                    {{ getControl("gender") | validate: "Gender" }}
+                                </mat-error>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_10">
+                        <div class="form_filed_wrapper text-center">
+                            <ul class="btn_wrapper">
+                                <li>
+                                    <button mat-raised-button [routerLink]="'EMPLOYEES' | absolutePath" type="button">
+                                        Cancel
+                                    </button>
+                                </li>
+                                <li>
+                                    <button mat-raised-button color="primary">
+                                        {{ employeeId ? "Update" : "Add" }}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

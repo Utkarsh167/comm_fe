@@ -1,0 +1,98 @@
+<div class="custom_container">
+
+    <div class="flex_row">
+        <ul class="breadcrumb">
+            <li>
+                <a href="javascript:void(0)">Stakeholders</a>
+            </li>
+            <li>
+                <a routerLink="/admin/stakeholders/vendor">Vendor</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="active">{{vendorId?'Edit':'Add'}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="white_wrapper">
+        <h2 class="heading">{{vendorId?'Edit':'Add'}} Vendor</h2>
+        <div class="form_wrapper">
+            <form [formGroup]="vendorForm" (ngSubmit)="submitForm()">
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <label class="form_label" style="margin-left: 20px;">Upload Vendor Image</label>
+                            <figure class="upload_img">
+                                <img [src]="vendorImage||'assets/images/placeholder-profile.jpg'">
+                                <label class="upload-icon" for="upload_img">
+                           <mat-icon>camera</mat-icon>
+                        </label>
+                            </figure>
+                            <input type="file" id="upload_img" (change)="onSelectFile($event)" style="display:none;">
+                        </div>
+
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="flex_row">
+                            <div class="flex_col_sm_10">
+                                <div class="form_filed_wrapper">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Vendor Name</mat-label>
+                                        <input formControlName="name" matInput>
+                                        <mat-error>{{getControl('name')|validate:'Vendor Name'}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- disable field for edit - satyam -->
+                        <div class="flex_row">
+                            <div *ngIf="vendorId ? true : false" class="flex_col_sm_10">
+                                <div class="form_filed_wrapper">
+                                    <mat-form-field appearance="outline" [class.disabled]="true">
+                                        <mat-label>Email</mat-label>
+                                        <input formControlName="email" matInput [readonly]="vendorId" />
+                                        <mat-error>{{getControl('email')|validate:'Email'}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- disable field for edit - satyam -->
+                            <div *ngIf="vendorId ? false : true" class="flex_col_sm_10">
+                                <div class="form_filed_wrapper">
+                                    <mat-form-field appearance="outline" [class.disabled]="false">
+                                        <mat-label>Email</mat-label>
+                                        <input formControlName="email" matInput [readonly]="false">
+                                        <mat-error>{{getControl('email')|validate:'Email'}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex_row">
+                            <div class="flex_col_sm_10">
+                                <div class="form_filed_wrapper">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Contact Number</mat-label>
+                                        <input formControlName="mobileNo" numberOnly matInput>
+                                        <mat-error>{{getControl('mobileNo')|validate:'Contact Number':'digits'}}</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex_row">
+                            <div class="flex_col_sm_10">
+                                <div class="form_filed_wrapper text-center">
+                                    <ul class="btn_wrapper">
+                                        <li> <button mat-raised-button type="button" [routerLink]="'VENDOR'|absolutePath">Cancel</button> </li>
+                                        <li> <button mat-raised-button color="primary">{{vendorId?'Update':'Add'}}</button> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<div class="white_wrapper">
+    <div class="flex_row">
+        <div class="flex_col_sm_7">
+            <div class="flex_row">
+                <div class="flex_col_sm_2">
+                    <div class="progressReport">
+                        <h2>Total Stats</h2>
+                        <div class="circularBar">
+                            <div class="circlereport">
+                                <!-- <h6>{{dashboardData?.tripData[0]?.totalOnTime}}</h6> -->
+                                <!-- OnTime cabs count % - Shivakumar A -->
+                                <h6 *ngIf="dashboardData?.tripData[0]?.tripScheduled">{{(dashboardData?.tripData[0]?.tripCompletedOnTime/(dashboardData?.tripData[0]?.totalTrips - dashboardData?.tripData[0]?.tripScheduled)) * 100 | number:'1.0-0'}} %</h6>
+                                <h6 *ngIf="!dashboardData?.tripData[0]?.tripScheduled">{{(dashboardData?.tripData[0]?.tripCompletedOnTime/(dashboardData?.tripData[0]?.totalTrips - 0)) * 100 | number:'1.0-0'}} %</h6>
+                               
+                                <span>On Time Cab</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_col_sm_8">
+                    <ul class="listData">
+                        <li>
+                            <h4>{{dashboardData?.usersData[0]?.totalEmployee || 0}}</h4>
+                            <span>Employees</span>
+                        </li>
+                        <li>
+                            <h4>{{dashboardData?.cabData[0]?.totalCab || 0}}</h4>
+                            <span>Cabs</span>
+                        </li>
+                        <li>
+                            <h4>{{dashboardData?.usersData[0]?.totalDriver || 0}}</h4>
+                            <span>Drivers</span>
+                        </li>
+                        <li>
+                            <h4>{{dashboardData?.vendors || 0}}</h4>
+                            <span>Vendors</span>
+                        </li>
+                        <li>
+                            <h4>{{dashboardData?.routeData[0]?.totalRoute || 0}}</h4>
+                            <span>Routes</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <h2 class="stats_report">Todays Stats</h2>
+            <div class="graph_report">
+                <div class="flex_row">
+                    <div class="flex_col_sm_2">
+                        <div [chart]="chart"></div>
+                        <p class="chart-count">CRF: <span>{{dashboardData?.totalCrf || 0}}</span></p>
+                    </div>
+                    <div class="flex_col_sm_2">
+                        <div [chart]="chart1" *ngIf="dashboardData"></div>
+                        <p class="chart-count">Cabs: <span>{{dashboardData?.cabData[0]?.totalCab || 0}}</span></p>
+                    </div>
+                    <div class="flex_col_sm_2">
+                        <div [chart]="chart2"></div>
+                        <p class="chart-count">Drivers: <span>{{dashboardData?.usersData[0]?.totalDriver || 0}}</span>
+                        </p>
+                    </div>
+                    <div class="flex_col_sm_2">
+                        <div [chart]="chart3"></div>
+                        <p class="chart-count">Routes: <span>{{dashboardData?.routeData[0]?.totalRoute || 0}}</span></p>
+                    </div>
+                    <div class="flex_col_sm_2">
+                        <div [chart]="chart4"></div>
+                        <p class="chart-count">SOS: <span>{{dashboardData?.sosData[0]?.totalSos || 0}}</span></p>
+                    </div>
+                </div>
+            </div>
+
+
+           
+
+
+            <div class="flex_row graph_report border_trip">
+                <div class="flex_col_sm_10">
+                    <app-dashboard-vendor-trips [vendorTrips]="dashboardData"></app-dashboard-vendor-trips>
+                </div>
+            </div>
+             <!-- Filter -->
+             <div class="flex_row">
+                <div class="flex_col_sm_7">
+                    <h2 class="stats_report">Trip History</h2>
+                </div>
+                <div class="flex_col_sm_3">
+                    <div class="flex_row">
+                        <div class="flex_col_sm_5">
+                            <mat-form-field>
+                                <mat-label>Trip Type</mat-label>
+                                <mat-select (selectionChange)="filter($event.value)" [(ngModel)]="shiftType">
+                                    <mat-option *ngFor="let type of tripType" [value]="type.value">
+                                        {{type.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex_col_sm_5">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="dp" (click)="dp.open()" readonly
+                                    placeholder="Month and Year" [formControl]="date">
+                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+                                    (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END -->
+
+            <div class="flex_row graph_report">
+                <div class="flex_col_sm_10">
+                    <app-dashboard-trip-history [allTripHistory]="tripHistory"></app-dashboard-trip-history>
+                </div>
+            </div>
+        </div>
+        <div class="flex_col_sm_3">
+            <div class="flex_row">
+                <div class="flex_col_sm_10">
+                    <!-- <app-employee-onboard-offboard [empOnboard]="dashboardData?.empOnboardOffboard">
+                    </app-employee-onboard-offboard> -->
+                    <!-- changed data source - Shivakumar A -->
+                    <app-employee-onboard-offboard [empOnboard]="dashboardData?.onTimeData">
+                    </app-employee-onboard-offboard>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,288 @@
+<div class="custom_container">
+  <div class="white_wrapper">
+    <h2 class="heading">Driver Detail</h2>
+    <div class="flex_row">
+      <ul class="breadcrumb">
+        <li>
+          <a href="javascript:void(0)">Stakeholders</a>
+        </li>
+        <li>
+          <a routerLink="/admin/stakeholders/driver">Driver</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="active">Detail</a>
+        </li>
+      </ul>
+    </div>
+    <div class="form_wrapper" *ngIf="driver">
+      <div class="flex_row">
+        <div class="flex_col_sm_10">
+          <div class="flex_row m-t-sm">
+            <div class="flex_col_sm_3">
+              <div class="form_filed_wrapper_details">
+                <label class="form_label">Driver Image</label>
+                <figure class="upload_img">
+                  <img [src]="driver.profilePicture | customImage | async" />
+                </figure>
+              </div>
+            </div>
+            <div class="flex_col_sm_6">
+              <div class="flex_row">
+                <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                    <label class="form_label">Driving License</label>
+                    <a [href]="driver?.documents[0]?.frontImageUrl" target="_blank">
+                      <figure class="sm_img_preview">
+                        <img [src]="
+                            driver?.documents[0]?.frontImageUrl
+                              | fileType
+                          " />
+                      </figure>
+                    </a>
+                  </div>
+                </div>
+                <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                    <label class="form_label">Address Proof</label>
+                    <a [href]="driver?.documents[3]?.frontImageUrl" target="_blank">
+                      <figure class="sm_img_preview">
+                        <img [src]="
+                            driver?.documents[3]?.frontImageUrl
+                              | fileType
+                          " />
+                      </figure>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex_row">
+                <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                    <label class="form_label">Left Palm</label>
+                    <a [href]="driver?.documents[1]?.frontImageUrl" target="_blank">
+                      <figure class="sm_img_preview">
+                        <img [src]="
+                            driver?.documents[1]?.frontImageUrl
+                              | fileType
+                          " />
+                      </figure>
+                    </a>
+                  </div>
+                </div>
+                <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                    <label class="form_label">Right Palm</label>
+                    <a [href]="driver?.documents[2]?.frontImageUrl" target="_blank">
+                      <figure class="sm_img_preview">
+                        <img [src]="
+                            driver?.documents[2]?.frontImageUrl
+                              | fileType
+                          " />
+                      </figure>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="flex_row m-t-sm">
+            <div class="flex_col_sm_2">
+              <div class="form_filed_wrapper_details">
+                <label class="form_label">Driving License</label>
+                <span class="show_label"><a class="view_details" [href]="dlUrl"
+                    target="_blank">{{getFileName(dlUrl)}}</a>
+                </span>
+              </div>
+            </div>
+            <div class="flex_col_sm_2">
+              <div class="form_filed_wrapper_details">
+                <label class="form_label">Left Palm</label>
+                <span class="show_label"><a class="view_details" [href]="leftPalmUrl"
+                    target="_blank">{{getFileName(leftPalmUrl)}}</a>
+                </span>
+              </div>
+            </div>
+            <div class="flex_col_sm_2">
+              <div class="form_filed_wrapper_details">
+                <label class="form_label">Right Palm</label>
+                <span class="show_label"><a class="view_details" [href]="rightPalmUrl"
+                    target="_blank">{{getFileName(rightPalmUrl)}}</a>
+                </span>
+              </div>
+            </div>
+            <div class="flex_col_sm_2">
+              <div class="form_filed_wrapper_details">
+                <label class="form_label">Address Proof</label>
+                <span class="show_label"><a class="view_details" [href]="addressProof"
+                    target="_blank">{{getFileName(addressProof)}}</a>
+                </span>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="flex_row">
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Driver Name</label>
+            <span class="show_label">{{ driver.name }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Driver ID</label>
+            <span class="show_label">{{ driver.driverId }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Contact Number</label>
+            <span class="show_label">{{ driver.mobileNo }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex_row">
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Registration Date</label>
+            <span class="show_label">{{
+              driver.created | customDate | checkNull
+            }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Email</label>
+            <span class="show_label">{{ driver.email | checkNull }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Status</label>
+            <span class="show_label">{{
+              driver.status | status | titlecase | checkNull
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex_row">
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Emergency Number</label>
+            <span class="show_label">{{ driver.emergencyNo | checkNull }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Drunker</label>
+            <span class="show_label">{{ getDrunkStatus(driver.drunker) }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Alcoholic/Non Alcoholic</label>
+            <span class="show_label">{{
+              getRadioStatus(driver.alcoholic)
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex_row">
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Consuming Tobacco</label>
+            <span class="show_label">{{ getRadioStatus(driver.tobacco) }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">BGV(Background Verification) Conducted</label>
+            <span class="show_label">{{
+              getRadioStatus(driver.backgroundVarified)
+            }}</span>
+          </div>
+        </div>
+
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">DL Badge Number</label>
+            <span class="show_label">{{ driver.DlBadgeNO | checkNull }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex_row">
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label" [style.margin-top]="driver.cab.length ? '-40px' : ''">DL Renewal Date</label>
+            <span class="show_label">{{
+              driver.dlRenewalDate | customDate
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex_row">
+        <div class="flex_col_sm_5">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label">Cabs</label>
+            <span class="show_label" *ngIf="!driver.cab?.length">No Cabs Assigned</span>
+            <table *ngIf="driver.cab?.length">
+              <tr>
+                <th>Vendor</th>
+                <th>Cab</th>
+                <!-- <th>Shift</th> -->
+              </tr>
+              <tr *ngFor="let cab of driver.cab">
+                <td>
+                  <a [routerLink]="['VENDOR' | absolutePath, cab.vendor?._id]"
+                    class="view_details">{{ cab.vendor?.name }}</a>
+                </td>
+                <td>
+                  <a [routerLink]="['CAB' | absolutePath, cab._id]" class="view_details">{{ cab.cabModel }}</a>
+                </td>
+                <!-- <td>{{cab.shift.shift}} </td> -->
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="flex_row">
+        <div class="flex_col_sm_10">
+          <div class="form_filed_wrapper_details text-center">
+            <ul class="btn_wrapper">
+              <li>
+                <button mat-raised-button color="primary" (click)="changeStatus('deleted', driver._id)">Archive</button>
+                <button mat-raised-button color="primary"
+                                    (click)="
+                                    changeStatus(
+                                        driver.status === 'blocked' ? 'unblocked' : 'blocked',
+                                        driver._id
+                                    )
+                                    ">
+                                  
+                                    {{ driver.status === "blocked" ? "un-block" : "Block" }}
+                                  </button>
+                <button mat-raised-button [routerLink]="['EDIT_DRIVER' | absolutePath, driver?._id]" color="primary">
+                  Edit
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

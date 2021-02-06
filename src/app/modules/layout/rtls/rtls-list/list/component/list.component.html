@@ -1,0 +1,129 @@
+<div class="mapWrapper">
+    <div class="cabinformation">
+        <div class="filterWrapper">
+            <div class="searchPanelWrap">
+                <app-search-filter [placeholder]="'Search By Cab Id.'" (setSearch)="setSearch($event)">
+                </app-search-filter>
+            </div>
+            <div class="countWrapper">
+                <ul>
+                    <li class="completed">
+                        <span>{{totalRtlsDataCount?.Completed}}</span>
+                        <a>Completed</a>
+                    </li>
+                    <li class="ongoing">
+                        <span>{{totalRtlsDataCount?.Ongoing}}</span>
+                        <a>Ongoing</a>
+                    </li>
+                    <li class="scheduled">
+                        <span>{{totalRtlsDataCount?.Scheduled}}</span>
+                        <a>Scheduled</a>
+                    </li>
+
+                    <!-- Added Missed Count - Shivakumar A -->
+                    <li class="missed">
+                        <span>{{totalRtlsDataCount?.Missed}}</span>
+                        <a>Missed</a>
+                    </li>
+
+                    <li class="total">
+                        <!-- Added Missed Count - Shivakumar A -->
+                        <span>{{totalRtlsDataCount?.Ongoing+ totalRtlsDataCount?.Completed + totalRtlsDataCount?.Scheduled + totalRtlsDataCount?.Missed}}</span>
+                        <a>Total</a>
+                    </li>
+
+                    <li class="total">
+                        <span style="color:red">{{totalRtlsDataCount?.criticalSos}}</span>
+                        <a style="color:red">Sos</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="filtermenu">
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <img src="./assets/images/filter.svg" alt="Filter">
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <mat-form-field>
+                        <mat-label>Status</mat-label>
+                        <mat-select [formControl]="filterObject?.status?.control" (selectionChange)="filter()">
+                            <mat-option *ngFor="let status of filterObject?.status?.list" [value]="status.value">
+                                {{status.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- filter-by-shift - satyam -->
+                    <form [formGroup]="shiftFilterForm" #form="ngForm">
+                        <mat-form-field>
+                            <mat-select placeholder="Select Shift" formControlName="shiftName"
+                                (selectionChange)="shiftFilter($event.value)">
+                                <mat-option [value]="''">{{ "All" }}</mat-option>
+                                <!-- <mat-option *ngFor="let item of shifts" [value]="item.shiftName">{{ item.shiftName}}</mat-option> -->
+                                <!-- changes by satyam -> Includes shift timing -->
+                                <mat-option *ngFor="let item of shifts" [value]="item.shiftName">
+                                    {{ item.shiftName+' '+'('+item.startShift+' - '+item.endShift+')'}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </mat-menu>
+            </div>
+        </div>
+        <div class="cabInfoWrap">
+            <div class="cablftWrapper">
+                <div class="cabDriverInfoWrapper" (scroll)="onScroll($event)">
+                    <ol start="1">
+                        <ng-container *ngFor="let cab of mapData; let i=index;">
+                            <li class="driverList" (click)="gotoDetails(cab,i)"
+                                [ngClass]="(i+1==currentCab)?'active':''">
+                                <p class="time">{{cab?.rosterDate | customDate}}</p>
+                                <div class="formGrpWrap">
+                                    <div class="form-group">
+                                        <label>Route Name</label>
+                                        <!-- <p>{{cab?.route?.routeBadge}}</p> -->
+                                        <p class="td-text-wrap">
+                                            {{cab.route.routeName.length>10?cab.route.routeName.substring(0,10)+'...':cab.route.routeName}}
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Cab ID</label>
+                                        <p>{{cab?.cab?.routeNo}}
+                                            <!-- Added medical cab icon - Shivakumar A-->
+                                            <b class="medical_cab_symbol_option" *ngIf="cab?.cab?.type === medicalCabValue">&#43;</b></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Vendor Name</label>
+                                        <p>{{cab?.cab?.vendor?.name}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label *ngIf="cab?.route?.shiftType=='login'">Login Time</label>
+                                        <label *ngIf="cab?.route?.shiftType=='logout'">Logout Time</label>
+                                        <p>{{cab?.route?.shiftTime}}</p>
+                                    </div>
+                                    <div class="tripstatus">
+                                        <!-- Added Missed tag - Shivakumar A -->
+                                        <p class="missed" *ngIf="cab?.rideCompleted && cab?.rideMissed">{{'Missed'}}</p>
+                                        <p class="completed" *ngIf="cab?.rideCompleted && !cab?.rideMissed">
+                                            {{'Completed'}}</p>
+                                        <!-- <p class="completed" *ngIf="cab?.rideCompleted">{{'Completed'}}</p> -->
+                                        <p class="ongoing" *ngIf="cab?.rideStarted">{{'Ongoing'}}</p>
+                                        <p class="scheduled" *ngIf="!cab?.rideStarted && !cab?.rideCompleted">
+                                            {{'Scheduled'}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ng-container>
+                    </ol>
+                </div>
+            </div>
+            <div class="cabrtwrapper">
+                <app-detail [mapData]="cabDetailData"></app-detail>
+            </div>
+        </div>
+    </div>
+    <div class="mapparentWrapper">
+
+        <div class="mapPanel">
+            <app-map-tracking [mapData]="cabDetailData" [driverLiveLocation]="driverLiveLocation">
+            </app-map-tracking>
+        </div>
+    </div>
+</div>

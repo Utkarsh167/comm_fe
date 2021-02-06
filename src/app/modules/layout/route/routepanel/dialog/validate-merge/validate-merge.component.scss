@@ -1,0 +1,57 @@
+.employee_detail {
+    position: relative;
+    h4 {
+        background-color: #79f2c0;
+        color: #091e42;
+        padding: 15px 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 500;
+    }
+    .cross {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 15px;
+        right: 12px;
+    }
+    .employeeListDtl {
+        padding: 10px 30px 0px 30px !important;
+    }
+    .flex_row {
+        flex-wrap: wrap;
+    }
+}
+
+.employee_detail .btn_wrapper li .mat-raised-button.mat-primary {
+    background-color: #79f2c0;
+    color: #091e42;
+}
+
+ul.btn_wrapper {
+    top: -15px;
+}
+
+.mergingGroup{
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    width: 64%;
+    line-height: 30px
+}
+.btn_route {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    button{
+        margin:0 10px;
+    }
+}
+.btn_route li:first-child button{
+    background-color: transparent !important;
+}
+button.mat-raised-button{
+    box-shadow:none !important;
+    border: 1px solid #79f2c0 !important;
+    min-width:104px !important;
+}

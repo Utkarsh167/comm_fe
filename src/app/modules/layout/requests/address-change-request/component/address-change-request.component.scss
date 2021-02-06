@@ -1,0 +1,14 @@
+.mat-menu-item .mat-icon {
+    // color: #ef2727;
+    top: 4px;
+}
+
+
+// .mat-column-email 
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell{
+    // min-width: 200px;
+    // width: 200px;
+    // changed to 100px - Shivakumar A
+    min-width: 100px;
+    width: 100px;
+}

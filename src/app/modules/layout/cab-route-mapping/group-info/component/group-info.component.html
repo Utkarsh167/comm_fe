@@ -1,0 +1,142 @@
+<div class="parentWrapper">
+    <div class="white_wrapper">
+        <div class="flex_row">
+            <ul class="breadcrumb">
+                <li>
+                    <a routerLink="/admin/cab-map/list">Assign cab</a>
+                </li>
+                <li>
+                    <!-- route name -- satyam -->
+                    <a href="javascript:void(0)" class="active">Route-Info</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="white_wrapper">
+        <!-- route name -- satyam -->
+        <h2 class="heading">Edit Route Info</h2>
+        <div class="form_wrapper">
+            <div class="flex_row">
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <!-- route name -- satyam -->
+                        <!-- <label class="form_label">Route Id</label>
+                        <span class="show_label">{{group?.grpId | checkNull}}</span> -->
+
+                        <!-- Added ShiftName - Shivakumar A -->
+                        <label class="form_label">Shift Name</label>
+                        <span class="show_label">{{group?.shiftName | checkNull}} - ({{group?.shiftTime | checkNull}})</span>
+                    </div>
+                </div>
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Start Location</label>
+                        <!-- <span class="show_label">{{group?.startLocation | checkNull}}</span> -->
+                        <!-- startLocation -- satyam -->
+                        <span *ngIf="shiftTypeLogin" class="show_label">{{group?.employees[0].address | checkNull}}</span>
+                        <span *ngIf="shiftTypeLogout" class="show_label">{{group?.startLocation | checkNull}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex_row">
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <!-- route name -- satyam -->
+                        <label class="form_label">Route Name</label>
+                        <span class="show_label">{{group?.routeName | checkNull}}</span>
+                    </div>
+                </div>
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Drop Location</label>
+                        <!-- <span class="show_label">{{group?.endLocation | checkNull}}</span> -->
+                        <!-- startLocation -- satyam -->
+                        <span *ngIf="shiftTypeLogin" class="show_label">{{group?.endLocation | checkNull}}</span>
+                        <span *ngIf="shiftTypeLogout" class="show_label">{{group?.employees[group.employees.length - 1].address | checkNull}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex_row">
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Trip type</label>
+                        <span class="show_label">{{group?.tripType | checkNull}}</span>
+                    </div>
+                </div>
+                <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                        <label class="form_label">Trip Time</label>
+                        <span class="show_label">{{group?.totalTripTime | checkNull}} {{'min'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="white_wrapper">
+        <h2 class="heading">Employee Details</h2>
+        <ul class="btn_wrapper btn-employee-post text-right">
+            <li> <button mat-raised-button color="primary" (click)="openaddgroupemployeeDialog()">
+                    <mat-icon>add</mat-icon> Add Employee
+                </button> </li>
+        </ul>
+        <div class="form_wrapper">
+            <table class="table mat-elevation-z8 group_employee_list">
+                <tr>
+                    <th> No.</th>
+                    <!-- <th></th> -->
+                    <!-- Emp ID - Shivakumar A -->
+                    <th> Emp ID </th>
+                    <th> Employee Name </th>
+                    <!-- Added gender - Shivakumar A -->
+                    <th>Gender</th>
+                    <th> Start location </th>
+                     <!-- emp drop time - start time -->
+                    <!-- <th> Start Time </th> -->
+                    <!-- emp drop time - pickup time - satyam -->
+                    <th *ngIf="shiftTypeLogin"> Pickup Time </th>
+                    <th *ngIf="shiftTypeLogout"> Drop Time </th>
+                    <th> Action </th>
+                </tr>
+                <tr *ngFor="let emp of group?.employees; let i=index;">
+                    <td> {{i+1}} </td>
+                    <!-- <mat-checkbox (change)="selectGroup(group._id,$event.checked)"></mat-checkbox> -->
+                    
+                    <!-- Added Emp ID - Shivakumar A -->
+                    <td> {{emp?.employeeId | checkNull}} </td>
+                    <td> {{emp?.name | checkNull}} </td>
+                    <!-- Added gender - Shivakumar A -->
+                    <td> {{emp?.gender}} </td>
+                    <td title="{{emp?.address | checkNull}}"> {{emp?.address | checkNull}} </td>
+                    <!-- emp drop time - pickup time - satyam -->
+                    <!-- <td> {{emp?.empPickupTime |checkNull}} </td> -->
+                    <td *ngIf="shiftTypeLogin"> {{emp?.empPickupTime |checkNull}} </td>
+                    <td *ngIf="shiftTypeLogout"> {{emp?.empDropTime |checkNull}} </td>
+                    <td>
+                        <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <button mat-menu-item (click)="removeEmployee(emp)">
+                                <mat-icon matTooltip="Delete">delete</mat-icon> Delete
+                            </button>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="map_wrapper">
+            <app-route-map [mapData]="groupDetailData" class="map_parent_route"></app-route-map>
+        </div>
+        <div class="flex_row">
+            <div class="flex_col_sm_10">
+                <div class="form_filed_wrapper_details text-center">
+                    <ul class="btn_wrapper">
+                        <li> <button mat-raised-button type="button"
+                                [routerLink]="'CAB_ROUTE_MAP_LIST'|absolutePath">Cancel</button> </li>
+                        <!-- <li> <button mat-raised-button color="primary">Update</button> </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

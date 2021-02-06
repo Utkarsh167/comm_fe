@@ -1,0 +1,14 @@
+<span>
+    Cab-mapping and roasters will be deleted from {{fromDate}} till {{toDate}}
+    Are you sure you want to continue?
+  </span>
+  <div class="flex_row" style="margin-top: 30px;">
+    <div class="flex_col_sm_10">
+      <ul class="btn_wrapper text-center">
+        <li> <a type="button" mat-raised-button color="primary" (click)="onNoClick()"> Cancel</a> </li>
+        <li> <button mat-raised-button color="primary" (click)="deleteCabMapping()">
+            Done
+          </button> </li>
+      </ul>
+    </div>
+  </div>

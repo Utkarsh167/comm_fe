@@ -1,0 +1,41 @@
+.employee_detail {
+    position: relative;
+    h4 {
+        background-color: #79f2c0;
+        color: #091e42;
+        padding: 15px 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 500;
+    }
+    .cross {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 15px;
+        right: 12px;
+    }
+    .employeeListDtl {
+        padding: 0 30px 50px 30px;
+    }
+    .flex_row {
+        flex-wrap: wrap;
+    }
+    button {
+        background-color: #79f2c0;
+        color: #091e42;
+    }
+}
+.mat-raised-button{
+    width:100px;
+}
+
+.btn_wrapper {
+    li{
+        &:first-child{
+            a{
+                background: #fff;
+            }
+        }
+    }
+}

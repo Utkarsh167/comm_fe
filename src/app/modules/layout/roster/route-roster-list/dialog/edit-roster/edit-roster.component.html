@@ -1,0 +1,49 @@
+<div class="employee_detail">
+  <h4>Assign Vendor and Cab</h4>
+  <img src="./assets/images/cross.svg" class="cross" (click)="onNoClick()" />
+
+  <form [formGroup]="editRosterForm" #form="ngForm" (ngSubmit)="editRoster()">
+    <div class="employeeListDtl">
+      <div class="flex_row">
+        <div class="flex_col_sm_5">
+          <mat-label>Vendor's Name</mat-label>
+          <mat-form-field appearance="outline">
+
+            <mat-select formControlName="vendor" placeholder="Select Vendor"
+              (selectionChange)="selectVendor($event.value)">
+              <mat-option *ngFor="let vendor of vendors" [value]="vendor._id">
+                {{vendor.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error>{{getControl('vendor')|validate:'Vendor'}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex_col_sm_5">
+          <mat-label>Cab</mat-label>
+          <mat-form-field appearance="outline">
+            <mat-select [placeholder]="cabPlaceHolder" formControlName="cab"
+              (selectionChange)="selectCab($event.value)">
+              <mat-option *ngFor="let cab of cabs" [value]="cab">
+                {{cab.routeNo}} {{cab.cabModel}}
+              </mat-option>
+            </mat-select>
+            <mat-error>{{getControl('cab')|validate:'Cab'}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="flex_row">
+        <div class="flex_col_sm_10">
+          <ul class="btn_wrapper text-center">
+            <li> <a type="button" mat-raised-button color="primary" (click)="onNoClick()"> Cancel</a> </li>
+            <li> <button mat-raised-button color="primary">
+                Done
+              </button> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>

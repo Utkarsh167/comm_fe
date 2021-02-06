@@ -1,0 +1,19 @@
+<div class="employee_detail">
+  <h4>Merge Group</h4>
+  <img src="./assets/images/cross-white.svg" class="cross" (click)="onNoClick(false)" />
+
+
+  <p class="mergingGroup" *ngIf="data.timeError && !data.sizeError">Merging the group may exceed the travel time.
+  </p>
+  <p class="mergingGroup" *ngIf="data.sizeError && !data.timeError">Merging the group may exceed the seating space.</p>
+
+  <p class="mergingGroup" *ngIf="data.sizeError && data.timeError">Merging the group may exceed the travel time and
+    seating capacity.</p>
+    <!-- {{data | json}} -->
+  <p class="mergingGroup">Are you sure, you want to merge this group?</p>
+
+  <ul class="btn_route">
+    <li> <button mat-raised-button color="primary" (click)="onNoClick(false)"> Cancel</button> </li>
+    <li> <button mat-raised-button color="primary" (click)="merge(true)">Merge</button> </li>
+  </ul>
+</div>

@@ -1,0 +1,20 @@
+.app-in-wrapper {
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    padding: 56px 0 60px 0;
+    // background: #def6ff17;
+    background: #faf9f8;
+    
+}
+
+.center_panel {
+    width: 100%;
+    margin: 0 auto;
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.under_construction img {
+    width: 100%;
+}

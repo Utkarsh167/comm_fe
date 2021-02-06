@@ -1,0 +1,50 @@
+
+<div class="parentWrapper">
+    <div class="white_wrapper">
+        <div class="actionWrapper">
+            <ul class="btn_wrapper text-right">
+                <li class="action">
+                    <button color="primary" class="action_menu" [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon> Action
+                    </button>
+                    <ul class="actionmenu">
+                        <mat-menu #menu="matMenu">
+                            <li>
+                                <a href="assets/xls/testShiftRequests.xls" class="csv-product">
+                                    <button mat-raised-button color="primary">
+                                        <mat-icon>arrow_downward</mat-icon> Download Sample XLS
+                                    </button>
+                                </a>
+                            </li>
+                            <li>
+                                <button mat-raised-button color="primary" class="csv-product upload">
+                                    <input type="file" #upload_csv (change)="uploadCSV($event)" accept=".xls"
+                                        class="fileButton">
+                                    <mat-icon>cloud_upload</mat-icon> Upload XLS
+                                </button>
+                                <div class="uploadData">
+                                    <label *ngIf="csvFileName">{{csvFileName}}
+                                        <span title="Remove File" (click)="removeCSV()">
+                                            <img alt="Remove" src="assets/images/delete.svg">
+                                        </span>
+                                    </label>
+                                </div>
+                            </li>
+                        </mat-menu>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <mat-tab-group (selectedTabChange)="tabRefresh($event)">
+            <mat-tab label="Requests">
+                <app-request [requestTabChange]="requestTabChange"></app-request>
+            </mat-tab>
+            <mat-tab label="Current">
+                <app-current [currentTabChange]="currentTabChange"></app-current>
+            </mat-tab>
+            <mat-tab label="History">
+                <app-history [historyTabChange]="historyTabChange"></app-history>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

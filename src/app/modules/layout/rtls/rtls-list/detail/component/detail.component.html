@@ -1,0 +1,162 @@
+<div *ngIf="cabDetails">
+    <div class="infoDtl">
+        <div class="routeInfoWrapper">
+            <h6 class="RouteHdr">Route <br> Information</h6>
+            <ul class="instruction">
+                <li class="ongoing">Ongoing</li>
+                <li class="scheduled">Scheduled</li>
+                <li class="complete">Completed</li>
+                <!-- Added Missed tag - Shivakumar A -->
+                <li class="missed">Missed</li>
+            </ul>
+
+        </div>
+        <div class="routeWrapper">
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>Cab ID</label>
+                    <p>{{cabDetails?.cab?.routeNo}}
+                        <!-- Added medical cab icon  Shivakumar - A-->
+                    <b class="medical_cab_symbol_option" *ngIf="cabDetails?.cab?.type === medicalCabValue">&#43;</b>  </p>
+                </div>
+                <div class="rightcabrow">
+                    <label>Cab Number</label>
+                    <p>{{cabDetails?.cab?.registrationNo}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="rightcabrow">
+                    <label>Driver Name</label>
+                    <p>{{cabDetails?.cab?.driverMapped[0].name}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="routeWrapper">
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>Driver Phone</label>
+                    <p>{{cabDetails?.cab?.driverMapped[0].mobileNo}}</p>
+                </div>
+                <div class="rightcabrow">
+                    <label>Trip Type</label>
+                    <p>{{cabDetails?.route?.shiftType}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>Status</label>
+                    <div class="tripstatus">
+                        <!-- Added Missed tag - Shivakumar A -->
+                        <p [ngClass]="'missed'" *ngIf="cabDetails?.rideCompleted && cabDetails?.rideMissed">{{'Missed'}}</p>
+                        <p [ngClass]="'completed'" *ngIf="cabDetails?.rideCompleted && !cabDetails?.rideMissed">{{'Completed'}}</p>
+                        <!-- <p [ngClass]="'completed'" *ngIf="cabDetails?.rideCompleted">{{'Completed'}}</p> -->
+                        <p [ngClass]="'ongoing'" *ngIf="cabDetails?.rideStarted">{{'Ongoing'}}</p>
+                        <p [ngClass]="'scheduled'" *ngIf="!cabDetails?.rideStarted && !cabDetails?.rideCompleted">
+                            {{'Scheduled'}}</p>
+                    </div>
+                </div>
+                <div class="rightcabrow">
+                    <label>Employess Onboarding</label>
+                    <p>{{cabDetails?.route?.empCount}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="routeWrapper location">
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>Start Location</label>
+                    <!-- startLocation -- satyam -->
+                    <p *ngIf="shiftTypeLogout">{{cabDetails?.route?.startLocation}}</p>
+                    <p *ngIf="shiftTypeLogin">{{cabDetails?.route?.employees[0].address}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>Drop Location</label>
+                    <!-- startLocation -- satyam -->
+                    <p *ngIf="shiftTypeLogin">{{cabDetails?.route?.endLocation}}</p>
+                    <p *ngIf="shiftTypeLogout">{{cabDetails?.route?.employees[cabDetails?.route?.employees.length-1].address}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="routeWrapper">
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>Time Travelled</label>
+                    <p>{{cabDetails?.route?.totalTripTime}} {{'min'}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="leftcabrow">
+                    <label>&nbsp;</label>
+                    <p>{{'&nbsp;'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="employeeDetail">
+        <h6>Employee Details</h6>
+        <div class="dtlList">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <th>Trip Status</th>
+                    <th>S.No.</th>
+                    <th>Name</th>
+                    <!-- Added Gender - Shivakumar A -->
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Time</th>
+                </tr>
+                <tr *ngFor="let emp of cabDetails?.route?.employees | sortEmployee ; let i=index">
+                    <td>{{emp.pickupStatus |employeeStatus}}</td>
+                    <td>{{i+1}}</td>
+                    <td>{{emp?.name}}</td>
+                <!-- Added Gender - Shivakumar A -->
+                    <td>{{emp?.gender}}</td>
+                    <td title="{{ emp?.address }}">{{emp?.address}}</td>
+                    <td *ngIf="cabDetails?.route?.shiftType=='login'">{{emp?.empPickupTime}}</td>
+                    <td *ngIf="cabDetails?.route?.shiftType=='logout'">{{emp?.empDropTime}}</td>
+
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <div class="employeeDetail">
+        <h6>SOS Status</h6>
+    </div>
+    <div class="locations">
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th>S.No.</th>
+                <th>Employee Name</th>
+                <!-- Added Gender - Shivakumar A -->
+                <th>Gender</th>
+                <th>Location</th>
+                <!-- Commented lat and long - Shivakumar A-->
+                <!-- <th>Latitude</th>
+                <th>Longitude</th> -->
+            </tr>
+            <tr *ngFor="let emp of cabDetails?.route?.employees | sortEmployee ; let i=index">
+                <ng-container *ngIf="emp?.sosGenerated">
+                    <td>{{i+1}}</td>
+                    <td>{{emp?.name}}</td>
+                <!-- Added Gender - Shivakumar A -->
+                    <td>{{emp?.gender}}</td>
+                    <td title="{{ emp?.sosLocation }}">{{emp?.sosLocation}}</td>
+                <!-- Commented lat and long - Shivakumar A-->
+                    <!-- <td>{{emp?.sosLatitude}}</td>
+                    <td>{{emp?.sosLongitude}}</td> -->
+                </ng-container>
+            </tr>
+
+        </table>
+        <div class="white_wrapper" *ngIf="!cabDetails?.isSosGenerated">
+            <h2 class="not-found">No Data Found</h2>
+        </div>
+    </div>
+</div>
+<div *ngIf="!cabDetails" class="no-data">
+    No Data Found
+</div>

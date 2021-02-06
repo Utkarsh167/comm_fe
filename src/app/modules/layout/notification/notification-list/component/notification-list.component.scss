@@ -1,0 +1,61 @@
+.breadcrumb {
+    width: 100%;
+    padding: 5px 15px;
+    li {
+        display: inline-block;
+        a {
+            color: #006CB8;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            outline: none;
+            &:before {
+                padding: 0 5px;
+                color: #B7BEC1;
+                content: "/ ";
+            }
+            &:after {
+                content: "/\00a0";
+                padding: 0 2px;
+                color: #A2ABAE;
+            }
+            &.active {
+                color: rgb(38, 44, 45);
+                cursor: default;
+                &:after {
+                    display: none;
+                }
+            }
+        }
+        &:first-child {
+            a {
+                &:before,
+                &:after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.btn_wrapper {
+    li {
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+.filter-count {
+    cursor: default;
+    pointer-events: none;
+    color: #636F73;
+    font-size: 13px;
+    position: relative;
+    top: 13px;
+}
+
+.mat-table img{
+    border: 1px solid #9ce4d4;
+}

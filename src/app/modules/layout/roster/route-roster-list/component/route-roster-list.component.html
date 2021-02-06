@@ -1,0 +1,35 @@
+<div class="parentWrapper">
+  <div class="white_wrapper">
+    <div class="actionWrapper">
+      <ul class="btn_wrapper text-right">
+        <li class="action"></li>
+
+        <li>
+          <!-- continue roster -- satyam -->
+          <!-- <button
+            mat-raised-button
+            color="primary"
+            (click)="openContinueRosterModel()"
+          >
+            Continue Roster
+          </button> -->
+        </li>
+      </ul>
+    </div>
+
+    <mat-tab-group (selectedTabChange)="tabRefresh($event)">
+      <mat-tab label="Login">
+        <app-login-ride
+          [loginTabChange]="loginTabChange"
+          (rosterEndDate)="checkDate($event)"
+        ></app-login-ride>
+      </mat-tab>
+      <mat-tab label="Logout">
+        <app-logout-ride
+          [logoutTabChange]="looutTabChange"
+          (rosterEndDate)="checkDate($event)"
+        ></app-logout-ride>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

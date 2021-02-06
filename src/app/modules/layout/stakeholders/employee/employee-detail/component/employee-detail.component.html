@@ -1,0 +1,423 @@
+<div class="custom_container">
+  <div class="white_wrapper">
+      <h2 class="heading">Employee Detail</h2>
+      <div class="flex_row">
+          <ul class="breadcrumb">
+              <li>
+                  <a href="javascript:void(0)">Stakeholders</a>
+              </li>
+              <li>
+                  <a routerLink="/admin/stakeholders/employees">Employee</a>
+              </li>
+              <li>
+                  <a href="javascript:void(0)" class="active">Detail</a>
+              </li>
+          </ul>
+      </div>
+      <div class="form_wrapper" *ngIf="employee">
+
+          <div class="flex_row">
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Employee Name</label>
+                      <span class="show_label">{{employee?.name}}</span>
+                  </div>
+              </div>
+
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Employee ID</label>
+                      <span class="show_label">{{employee?.employeeId}}</span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flex_row">
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+
+                      <label class="form_label">Contact Number</label>
+                      <span class="show_label">{{employee?.mobileNo}}</span>
+                  </div>
+              </div>
+
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Shift Start Time</label>
+                      <span class="show_label">{{employee?.shiftStartTime | shiftTime}}</span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flex_row">
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Shift End Time</label>
+                      <span class="show_label">{{employee?.shiftEndTime | shiftTime}}</span>
+                  </div>
+              </div>
+
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Pickup Location</label>
+                      <span class="show_label">{{employee?.pickup?.address?.fullAddress|checkNull}}</span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flex_row">
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Drop Off Location</label>
+                      <span class="show_label">{{employee?.dropoff?.address|checkNull}}</span>
+                  </div>
+              </div>
+
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Status</label>
+                      <span class="show_label">{{employee?.status|status|titlecase|checkNull}}</span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="flex_row">
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Gender</label>
+                      <span class="show_label">{{employee?.gender|checkNull}}</span>
+                  </div>
+              </div>
+              <!-- User Counts -- satyam -->
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Cancelled Trip Count</label>
+                      <span class="show_label">{{cancelledTripCount}}</span>
+                  </div>
+              </div>
+
+
+          </div>
+
+          <div class="flex_row">
+              <!-- User Counts -- satyam -->
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">Reschedule Trip Count</label>
+                      <span class="show_label">{{rescheduleTripCount}}</span>
+                  </div>
+              </div>
+              <!-- User Counts -- satyam -->
+              <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                      <label class="form_label">NoShow Count</label>
+                      <span class="show_label">{{noShowCount}}</span>
+                  </div>
+              </div>
+              
+
+
+          </div>
+
+          <!-- positon of buttons - satyam -->
+          <!-- <div class="flex_row">
+              <div class="flex_col_sm_10">
+                  <div class="form_filed_wrapper_details text-center">
+                      <ul class="btn_wrapper">
+                          <li>  -->
+                              <!-- archive-button- satyam -->
+                              <!-- <button mat-raised-button color="primary" (click)="changeStatus('deleted', employee._id)">Archive</button>
+                              <button mat-raised-button color="primary"
+                                  (click)="
+                                  changeStatus(
+                                      employee.status === 'blocked' ? 'unblocked' : 'blocked',
+                                      employee._id
+                                  )
+                                  ">
+                                
+                                  {{ employee.status === "blocked" ? "un-block" : "Block" }}
+                              </button>
+                              <button mat-raised-button [routerLink]="['EDIT_EMPLOYEE'|absolutePath,employee._id]" color="primary">Edit</button> 
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div> -->
+      </div>
+      <div class="white_wrapper">
+        <div class="flex_row ">
+          <div class="flex_col_sm_5">
+            <ul>
+              <li>
+                <a><h4>Employee Roster Details</h4></a>
+              </li>
+            </ul>
+          </div>
+          <div class="flex_col_sm_5">
+            <ul class="btn_wrapper text-right">
+              <li>
+                <app-filter-count
+                  [filterCount]="appliedFilterCount"
+                ></app-filter-count>
+              </li>
+              <li>
+                <button
+                  mat-raised-button
+                  (click)="showFilter = !showFilter"
+                  color="primary"
+                >
+                  <mat-icon>filter_list</mat-icon> Filter
+                </button>
+              </li>
+              </ul>
+          </div>
+        </div>
+        <div style="margin-top: 10px; margin-left: 10px;" class="filter_wrapper" [class.filter_wrapper_show]="showFilter">
+          <div class="flex_row">
+            <div class="flex_col_sm_6">
+              <app-date-filter [dateObject]="filterObject.registrationDate">
+              </app-date-filter>
+            </div>
+          </div>
+          <div class="flex_row">
+            <div class="flex_col_sm_10 text-center">
+              <ul class="btn_wrapper">
+                <li>
+                  <button
+                    filter_btn
+                    mat-stroked-button
+                    [disabled]="disable()"
+                    (click)="resetFilter()"
+                  >
+                    Reset
+                  </button>
+                </li>
+                <li>
+                  <button
+                    filter_btn
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="disable()"
+                    (click)="filter()"
+                  >
+                    Filter
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="white_wrapper">
+          <table
+            mat-table
+            [dataSource]="loginRoster"
+            matSort
+            (matSortChange)="sortData($event)"
+            class="mat-elevation-z8" style="margin-top: 10px;"
+          >
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef>No.</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                {{ getSerialNumber(i + 1) }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="vendor">
+              <th mat-header-cell *matHeaderCellDef>Vendor</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.cab?.vendor?.name | checkNull }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="cab">
+              <th mat-header-cell *matHeaderCellDef>Cab ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.cab?.routeNo | checkNull }}
+                <!-- Added medical cab icon - Shivakumar A-->
+                <b class="medical_cab_symbol_option" *ngIf="element?.cab?.type === medicalCabValue">&#43;</b>
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="cabModel">
+              <th mat-header-cell *matHeaderCellDef>Cab Model</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.cab?.cabModel | checkNull }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="regNo">
+              <th mat-header-cell *matHeaderCellDef>Cab Registration Number</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.cab?.registrationNo | checkNull }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Driver Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.cab.driverMapped[0].name | checkNull }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="groupName">
+              <!-- route name -- satyam -->
+              <th mat-header-cell *matHeaderCellDef>Route Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.route?.routeName | checkNull }}
+              </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Driver Name</th>
+              <td mat-cell *matCellDef="let element">
+                  {{ element.cab.driverMapped[0].name | checkNull }}
+              </td>
+          </ng-container> -->
+        
+            <ng-container matColumnDef="shiftName">
+              <th mat-header-cell *matHeaderCellDef>Shift Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.route?.shiftName | checkNull }}
+              </td>
+            </ng-container>
+            <!-- shiftTIme -- satyam -->
+            <ng-container matColumnDef="shiftTime">
+              <th mat-header-cell *matHeaderCellDef>Shift Time</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.route?.shiftTime | checkNull }}
+              </td>
+            </ng-container>
+            <!-- pickuptime -- satyam -->
+            <ng-container matColumnDef="pickupTime">
+              <th mat-header-cell *matHeaderCellDef>PickUp Time</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.route?.pickupTime | checkNull }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tripType">
+              <th mat-header-cell *matHeaderCellDef>Trip Type</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.route.shiftType=='login'">Login</span>
+                <span *ngIf="element.route.shiftType=='logout'">Logout</span>
+
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="startlocation">
+              <th mat-header-cell *matHeaderCellDef>Start Location</th>
+              <td mat-cell *matCellDef="let element" title="{{ element?.route?.startLocation }}">
+                {{ element?.route?.startLocation | checkNull }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="endlocation">
+              <th mat-header-cell *matHeaderCellDef>End Location</th>
+              <td mat-cell *matCellDef="let element" title="{{ element?.route?.endLocation }}" >
+                {{ element?.route?.endLocation | checkNull }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.route.pickUpStatus | employeeStatus }}
+              </td>
+            </ng-container>
+            <!-- commented -- satyam -->
+            <!-- <ng-container matColumnDef="employee">
+              <th mat-header-cell *matHeaderCellDef>No of Employee</th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="view_details td-text-wrap"
+                  (click)="openDetailDialog(element?.route?.employees)"
+                  >{{ element?.route?.empCount | checkNull }}
+                </span>
+              </td>
+            </ng-container> -->
+        
+            <ng-container matColumnDef="duration">
+              <th mat-header-cell *matHeaderCellDef>Trip duration</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.route?.totalTripTime | checkNull }}
+                <span *ngIf="element?.route?.totalTripTime">{{ "min" }} </span>
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="validity">
+              <th mat-header-cell *matHeaderCellDef>Validity</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.validFrom | customDate }} {{ "to" }}<br />
+                {{ element?.validTill | customDate }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="created">
+              <th mat-header-cell *matHeaderCellDef>Trip Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.rosterDate | customDate }}
+              </td>
+            </ng-container>
+        
+            <!-- <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button
+                    mat-menu-item
+                    routerLinkActive="active"
+                    (click)="openEditModel(element)"
+                  >
+                    <mat-icon matTooltip="Edit">edit</mat-icon> Edit
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container> -->
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+        <div class="white_wrapper" *ngIf="total === 0">
+          <h2 class="not-found">No Data Found</h2>
+        </div>
+        
+        <div class="white_wrapper" *ngIf="loginRoster.data.length">
+          <mat-paginator
+            [length]="total"
+            [pageIndex]="page - 1"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageOptions"
+            (page)="changePage($event)"
+          >
+          </mat-paginator>
+        </div>
+        <!-- positon of buttons - satyam -->
+          <div class="flex_row" style="margin-top:50px">
+              <div class="flex_col_sm_10">
+                  <div class="form_filed_wrapper_details text-center">
+                      <ul class="btn_wrapper">
+                          <li> 
+                              <!-- archive-button- satyam -->
+                               <button mat-raised-button color="primary" (click)="changeStatus('deleted', employee._id)">Archive</button>
+                              <button mat-raised-button color="primary"
+                                  (click)="
+                                  changeStatus(
+                                      employee.status === 'blocked' ? 'unblocked' : 'blocked',
+                                      employee._id
+                                  )
+                                  ">
+                                
+                                  {{ employee.status === "blocked" ? "un-block" : "Block" }}
+                              </button>
+                              <button mat-raised-button [routerLink]="['EDIT_EMPLOYEE'|absolutePath,employee._id]" color="primary">Edit</button> 
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+  </div>
+</div>

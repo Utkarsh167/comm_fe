@@ -1,0 +1,20 @@
+<!-- <mat-checkbox class="parentSelectcheck" (change)="selectAllGroups($event.checked)">
+</mat-checkbox> -->
+<div class="flex_row" *ngFor="let group of groupDetails; let i=index;">
+    <div class="flex_col_sm_1 pd-r0">
+        <mat-checkbox [checked]="group?.ischecked" (change)="selectGroup(group,$event.checked)"
+            *ngIf="group.status!='executed'">
+        </mat-checkbox>
+    </div>
+    <div class="flex_col_sm_4 pd-0" [ngClass]="(i+1==currentIndex)?'selectGroup':''" (click)="changeClass(i)">
+        <app-group-route-box [groupData]="group" (group)="reciecveData($event)"
+            (groupNameChange)="onNameChange($event)"></app-group-route-box>
+    </div>
+    <div class="flex_col_sm_6">
+        <div class="suffleDataWrap" (click)="shuffleDialog(group)" *ngIf="group?.status=='unapproved'">
+            <img src="assets/images/shuffle.svg" alt="">
+        </div>
+        <!-- Added overallData & newUserData -  Shivakumar A -->
+        <app-group-route-detail [employeeData]="group" [overallData]="groupDetails" [newUserData]="newUserDetails"></app-group-route-detail>
+    </div>
+</div>

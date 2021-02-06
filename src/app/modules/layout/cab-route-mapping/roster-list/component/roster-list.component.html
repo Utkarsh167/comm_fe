@@ -1,0 +1,74 @@
+<div class="parentWrapper">
+    <!-- <div class="white_wrapper">
+        <div class="flex_row">
+            <div class="flex_col_sm_3">
+                <app-search-filter [placeholder]="'Search By name, emp Id, contact no, cab Id'">
+                </app-search-filter>
+            </div>
+            <div class="flex_col_sm_7">
+                <ul class="btn_wrapper text-right">
+                    <li> <button mat-raised-button (click)="showFilter=!showFilter" color="primary">
+                            <mat-icon>filter_list</mat-icon> Filter
+                        </button> </li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex_row">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="javascript:void(0)" class="active">Roster</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="white_wrapper filter_wrapper" [class.filter_wrapper_show]="showFilter">
+        <label>Cab Timmings</label>
+        <div class="flex_row">
+            <div class="flex_col_sm_6">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker" (click)="picker.open()" readonly placeholder="From">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="flex_col_sm_6">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker1" (click)="picker1.open()" readonly placeholder="To">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex_row">
+            <div class="flex_col_sm_10 text-center">
+                <ul class="btn_wrapper">
+                    <li> <button filter_btn mat-stroked-button>
+                            Reset
+                        </button>
+                    </li>
+                    <li>
+                        <button filter_btn mat-raised-button color="primary">
+                            Filter
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="white_wrapper">
+        <mat-tab-group (selectedTabChange)="tabRefresh($event)">
+            <mat-tab label="Login">
+                <app-login-ride [loginTabChange]="loginTabChange"></app-login-ride>
+            </mat-tab>
+            <mat-tab label="Logout">
+                <app-logout-ride [logoutTabChange]="looutTabChange"></app-logout-ride>
+            </mat-tab>
+            <!-- commented -- satyam -->
+            <!-- <mat-tab label="New Request">
+                <app-updated-group [newRequestTabChange]="newRequestTabChange"></app-updated-group>
+            </mat-tab> -->
+        </mat-tab-group>
+    </div>
+
+</div>

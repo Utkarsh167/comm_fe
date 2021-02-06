@@ -1,0 +1,103 @@
+<div class="white_wrapper action">
+    <div class="flex_row">
+        <ul class="breadcrumb">
+            <li>
+                <a href="javascript:void(0)">Stakeholders</a>
+            </li>
+            <li>
+                <a routerLink="/admin/stakeholders/cab">Cab</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="active">Archived</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="white_wrapper">
+    <table mat-table [dataSource]="cabs" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cabBadge">
+            <th mat-header-cell *matHeaderCellDef> Cab ID </th>
+            <td mat-cell *matCellDef="let element">
+                <!-- {{element.cabBadge|checkNull}} -->
+                <!-- changed cab Badge to cab Id - Shivakumar A -->
+                {{element.routeNo|checkNull}}
+                 <!-- Added Medical cab - Shivakumar A -->
+        <b class="medical_cab_symbol_option" *ngIf="element?.type === medicalCabValue">&#43;</b>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cabModel">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>Model Name</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.cabModel|checkNull}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="registrationNo">
+            <th mat-header-cell *matHeaderCellDef> Registration No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.registrationNo|checkNull}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="seatingCapacity">
+            <th mat-header-cell *matHeaderCellDef> Seating Capacity </th>
+            <td mat-cell *matCellDef="let element"> {{element.seatingCapacity|checkNull}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="vendorName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span [ngClass]="(isFilterApplied && filterForm.value.vendorId)?'appliedFilter':''">Vendor Name
+                </span>
+            </th>
+            <td mat-cell *matCellDef="let element"> <span class="td-text-wrap">{{element.vendorName|checkNull}}</span>
+            </td>
+        </ng-container>
+        <!-- ReasonForArchive -- satyam -->
+        <ng-container matColumnDef="comment">
+            <th mat-header-cell *matHeaderCellDef> Reason </th>
+            <td mat-cell *matCellDef="let element"> {{element.comment|checkNull}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="created">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span [ngClass]="(isFilterApplied && filterForm.value.fromDate)?'appliedFilter':''">Registration Date
+                </span>
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.created|customDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isAssigned">
+            <th mat-header-cell *matHeaderCellDef>
+                <span [ngClass]="(isFilterApplied && filterForm.value.assigned)?'appliedFilter':''">Driver Mapping
+                    Status
+                </span>
+            </th>
+            <td mat-cell *matCellDef="let element"> {{(element.assigned?.length)?'Assigned':'Unassigned'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status|status|titlecase|checkNull}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="white_wrapper" *ngIf="total===0">
+        <h2 class="not-found">No Data Found</h2>
+    </div>
+    <div class="white_wrapper" *ngIf="cabs.data.length">
+        <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+            (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+</div>

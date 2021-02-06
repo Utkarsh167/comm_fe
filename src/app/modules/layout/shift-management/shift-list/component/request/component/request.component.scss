@@ -1,0 +1,49 @@
+.breadcrumb {
+    width: 100%;
+    padding: 5px 15px;
+    li {
+        display: inline-block;
+        a {
+            color: #006CB8;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            outline: none;
+            &:before {
+                padding: 0 5px;
+                color: #B7BEC1;
+                content: "/ ";
+            }
+            &:after {
+                content: "/\00a0";
+                padding: 0 2px;
+                color: #A2ABAE;
+            }
+            &.active {
+                color: rgb(38, 44, 45);
+                cursor: default;
+                &:after {
+                    display: none;
+                }
+            }
+        }
+        &:first-child {
+            a {
+                &:before,
+                &:after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+// .mat-column-email 
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell{
+    // min-width: 200px;
+    // width: 200px;
+    // changed to 100px - Shivakumar A
+    min-width: 100px;
+    width: 100px;
+}

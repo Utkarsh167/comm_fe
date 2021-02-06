@@ -1,0 +1,122 @@
+<div class="white_wrapper">
+  <div class="FilterAreaWrap" *ngIf="isGroupFound">
+    <div class="flex_row">
+      <div class="flex_col_sm_2">
+        <app-search-filter [placeholder]="'Search by route name, employee id, employee name'"
+          (setSearch)="setSearch($event)">
+        </app-search-filter>
+      </div>
+
+            <div class="flex_col_sm_2 shifts">
+                <form [formGroup]="filterForm" #form="ngForm">
+                    <mat-form-field>
+                        <mat-select placeholder="Select Shift" formControlName="shiftName" (selectionChange)="shiftFilter($event.value)">
+                            <mat-option [value]="''">{{ "All" }}</mat-option>
+                            <!-- <mat-option *ngFor="let item of shifts" [value]="item.shiftName">{{ item.shiftName}}</mat-option> -->
+                            <!-- changes by satyam -> Includes shift timing -->
+                            <mat-option *ngFor="let item of shifts" [value]="item.shiftName">
+                              {{ item.shiftName+' '+'('+item.startShift+' - '+item.endShift+')'}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </div>
+
+      <div class="flex_col_sm_6">
+        <ul class="btn_wrapper text-left">
+          <li>
+            <button mat-raised-button color="primary" (click)="createNewGroups()">
+              Create New Groups
+            </button>
+          </li>
+          <li>
+            <button mat-raised-button color="primary" (click)="approveGroup(true)">
+              Approve all
+            </button>
+          </li>
+          <li>
+            <button mat-raised-button color="primary" (click)="mergeGroup()">
+              Merge
+            </button>
+          </li>
+          <li>
+            <button mat-raised-button color="primary" (click)="dissolveGroup()">
+              Dissolve
+            </button>
+          </li>
+          <li>
+            <button mat-raised-button color="primary" (click)="regenrateGroup()">
+              Regenerate
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="flex_col_sm_3">
+        <ul class="totalStatusRotesbar">
+          <!-- /* Total Employee Count - Shivakumar A */ -->
+          <li>
+            <span>{{ totalEmployees }}</span>Employees</li>
+          <li>
+            <span>{{ total }}</span>routes
+          </li>
+          <li>
+            <span>{{ totalOccupancy }}</span>Occupancy Level
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex_row">
+    <div class="flex_col_sm_7">
+      <div class="routeColumnWrapper" id="test" (scroll)="onScroll($event)" [ngClass]="!allTypesGroup.length ? 'no-group' : ''">
+        <!-- Added isGroupFoundCheck to the condition -->
+        <div class="addGroup" *ngIf="!isGroupFound && !search && isGroupFoundCheck">
+          <div class="assignGroup" (click)="assignConfigurationDialog()">
+            <img src="./assets/images/plus.svg" /> Create Groups
+          </div>
+        </div>
+
+        <div class="addGroup" *ngIf="
+            (!allTypesGroup.length && search) ||
+            (!allTypesGroup.length && selectedShift)
+          ">
+          <div class="assignGroup">
+            No Data Found
+          </div>
+        </div>
+
+        <div class="flex_row" *ngIf="allTypesGroup && allTypesGroup.length">
+          <div class="flex_col_sm_10">
+            <div class="tabWrapper">
+              <div class="parentSelectcheck">
+                <mat-checkbox *ngIf="allTypesGroup.length" [checked]="allCheckBox"
+                  (change)="selectAllGroups($event.checked)">
+                </mat-checkbox>
+              </div>
+              <mat-tab-group (selectedTabChange)="tabRefresh($event)">
+                <mat-tab label="Login">
+                  <!-- Added newUserData - Shivakumar A -->
+                  <app-group-login (groupDetailsData)="groupDetails($event)" (groupNameData)="onUpdateGroupName($event)"
+                    (suffledGroupData)="afterSuffled($event)" [groupLoginData]="allGroups" [newUserData]="newUserList">
+                  </app-group-login>
+                </mat-tab>
+                <mat-tab label="Logout">
+                  <!-- Added newUserData - Shivakumar A -->
+                  <app-group-logout (groupDetailsData)="groupDetails($event)" (suffledGroupData)="afterSuffled($event)"
+                    (groupNameData)="onUpdateGroupName($event)" [groupLogoutData]="allLogoutGroups" [newUserData]="newUserList">
+                  </app-group-logout>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex_col_sm_3">
+      <div class="mapwrapper">
+        <app-route-map [mapData]="groupDetailData" class="map_parent_route"></app-route-map>
+        
+      </div>
+    </div>
+  </div>
+</div>

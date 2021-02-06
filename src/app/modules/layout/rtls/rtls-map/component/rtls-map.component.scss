@@ -1,0 +1,11 @@
+.mapparentWrapper {
+    width: 100%;
+    height: calc(100vh - 130px);
+}
+
+:host ::ng-deep {
+    app-map>div {
+        width: 100%;
+        height: calc(100vh - 130px);
+    }
+}

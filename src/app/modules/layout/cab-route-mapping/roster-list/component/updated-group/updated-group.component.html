@@ -1,0 +1,146 @@
+<div class="white_wrapper">
+    <div class="flex_row">
+        <div class="flex_col_sm_3">
+            <!-- search update --satyam -->
+            <app-search-filter [placeholder]="'Search by route name, employee name, employee Id, shift name'" (setSearch)="setSearch($event)">
+            </app-search-filter>
+        </div>
+
+        <!-- <div class="flex_col_sm_7">
+      <ul class="btn_wrapper text-right">
+        <li> <button mat-raised-button (click)="opencab('',true)" color="primary">
+            <mat-icon>date_range</mat-icon> Roll Over
+          </button> </li>
+      </ul>
+    </div> -->
+    </div>
+    <div class="flex_row">
+        <ul class="breadcrumb">
+            <li>
+                <a href="javascript:void(0)" class="active">Assign cab</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="white_wrapper">
+    <table mat-table [dataSource]="updatedGroup" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+
+        <!-- <ng-container matColumnDef="check">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle($event) : null"
+          [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-checkbox (click)="$event.stopPropagation()" [disabled]="!element.cabId"
+          (change)="$event ? groupSelect($event.checked,element) : null" [checked]="selection.isSelected(element)"
+          [aria-label]="checkboxLabel(element)"></mat-checkbox>
+      </td>
+    </ng-container> -->
+
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}} </td>
+        </ng-container>
+
+
+
+
+        <ng-container matColumnDef="name">
+            <!-- route name -- satyam -->
+            <th mat-header-cell *matHeaderCellDef> Route Name </th>
+            <td mat-cell *matCellDef="let element">
+                <span class="view_details td-text-wrap">
+          {{element?.routeName | checkNull}}
+        </span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="groupid">
+            <th mat-header-cell *matHeaderCellDef> Group ID </th>
+            <td mat-cell *matCellDef="let element"> {{element?.grpId | checkNull}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startlocation">
+            <th mat-header-cell *matHeaderCellDef> Start Location </th>
+            <!-- <td mat-cell *matCellDef="let element"> {{element?.startLocation | checkNull}} </td> -->
+            <!-- startLocation -- satyam  -->
+            <td  mat-cell *matCellDef="let element">
+                <p *ngIf="!element.shiftTypeLogin" title="{{element?.startLocation | checkNull}}">{{element?.startLocation | checkNull}}</p>
+                <p *ngIf="element.shiftTypeLogin && element.employees" title="{{element?.employees[0].address | checkNull}}">{{element?.employees[0].address | checkNull}}</p>
+                <p *ngIf="element.shiftTypeLogin && !element.employees">-</p>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="endlocation">
+            <th mat-header-cell *matHeaderCellDef> End Location </th>
+            <!-- <td mat-cell *matCellDef="let element"> {{element?.endLocation | checkNull}} </td> -->
+            <!-- startLocation -- satyam  -->
+            <td  mat-cell *matCellDef="let element">
+                <p *ngIf="element.shiftTypeLogin" title="{{element?.endLocation | checkNull}}">{{element?.endLocation | checkNull}}</p>
+                <p *ngIf="!element.shiftTypeLogin && element.employees" title="{{element?.employees[element.employees.length-1].address | checkNull}}">{{element?.employees[element.employees.length-1].address | checkNull}}</p>
+                <p *ngIf="!element.shiftTypeLogin && !element.employees">-</p>
+            </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="employee">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> No of Employee </th>
+            <td mat-cell *matCellDef="let element"> <span style="text-align:center" class="view_details td-text-wrap"
+          (click)="openDetailDialog(element.employees,element.shiftType)">{{element.empCount}} </span></td>
+            <!-- <td mat-cell *matCellDef="let element"> {{element.empCount | checkNull}}</td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef> Trip duration </th>
+            <td mat-cell *matCellDef="let element">{{element.totalTripTime | checkNull}} {{'min'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef> Trip Type </th>
+            <td mat-cell *matCellDef="let element">{{element.shiftType | checkNull}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="shift">
+            <th mat-header-cell *matHeaderCellDef> Shift Name </th>
+            <td mat-cell *matCellDef="let element">{{element.shiftName | checkNull}} </td>
+        </ng-container>
+        <!-- shiftTime -- satyam -->
+        <ng-container matColumnDef="shiftTime">
+            <th mat-header-cell *matHeaderCellDef> Shift Time </th>
+            <td mat-cell *matCellDef="let element">{{element.shiftTime | checkNull}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item (click)="approveRequest('approved',element?.grpDbId)" routerLinkActive="active">
+            <mat-icon matTooltip="Approve">done</mat-icon> Approve
+          </button>
+                </mat-menu>
+
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="white_wrapper" *ngIf="total===0">
+        <h2 class="not-found">No Data Found</h2>
+    </div>
+
+
+    <div class="white_wrapper" *ngIf="updatedGroup.data.length">
+        <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="pageOptions" (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+</div>

@@ -1,0 +1,158 @@
+.employee_detail {
+    position: relative;
+    h4 {
+        background: #79f2c0;
+        padding: 15px 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 500;
+        color: #091e42;
+    }
+    label {
+        font-weight: 500;
+        font-size: 17px;
+        margin-bottom: 10px;
+    }
+    p {
+        font-weight: 5600;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .cross {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        top: 15px;
+        right: 12px;
+    }
+    .employeeListDtl {
+        padding: 0 30px 20px 30px;
+         border: 1px solid #091e42;
+        // margin-top: 20px;
+        padding-top: 20px;
+        // background: #2dd6ab1c;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .selectEmployee{
+        border: 1px solid #79f2c0;
+        background: #2dd6ab1c;
+    }
+}
+
+.empFilter {
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.btn_wrapper li .mat-raised-button.mat-primary {
+    background-color: #79f2c0;
+    color: #091e42;
+}
+
+
+.search_filter .mat-form-field-suffix .mat-icon {
+    color: #333 !important;
+}
+
+.search-btn {
+    min-width: 37px;
+    padding: 0 10px;
+}
+
+.searchWrapper {
+    position: relative;
+    margin: 3px 0 0 0;
+    width: 80%;
+    input {
+        width: 89%;
+        height: auto;
+        padding: 6px 25px 6px 12px;
+        border-radius: 3px;
+        box-shadow: none;
+        -webkit-transition: border linear .2s, -webkit-box-shadow linear .2s;
+        transition: border linear .2s, -webkit-box-shadow linear .2s;
+        transition: border linear .2s, box-shadow linear .2s;
+        transition: border linear .2s, box-shadow linear .2s, -webkit-box-shadow linear .2s;
+    }
+    .clear {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        outline: none;
+    }
+    .search {
+        border-color: transparent;
+        border-radius: 4px;
+        margin: 0px 0 0 10px;
+        padding: 7px 10px;
+        outline: none;
+        cursor: pointer;
+        position: absolute;
+        top: 6px;
+        right: 20px;
+        font-size: 22px;
+    }
+}
+
+.white_wrapper {
+    .flex_row {
+        align-items: flex-start;
+        .flex_col_sm_7 {
+            margin-top: 20px;
+        }
+    }
+}
+.clear {
+    font-size: 18px;
+    position: absolute;
+    right: 27px;
+    top: 11px;
+}
+
+.search {
+    position: absolute;
+    top: 22px;
+    right: 17px;
+}
+ :host ::ng-deep {
+    .searchWrapper {
+        .mat-form-field-appearance-outline {
+            .mat-form-field-infix {
+                padding: 0.4em 0 !important;
+                border-top: .14375em solid transparent;
+            }
+            .mat-form-field-label {
+                top: 1.94375em !important;
+                mat-label {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .form_filed_wrapper {
+        margin: 0;
+        position: relative;
+        .mat-form-field-wrapper {
+            padding: 0;
+        }
+    }
+    input.mat-input-element{
+        width: 84%;
+    }
+}
+
+button.mat-raised-button{
+    box-shadow:none !important;
+    border: 1px solid #79f2c0 !important;
+    min-width:104px !important;
+}
+ul.btn_wrapper{
+    margin-top: 20px;
+}

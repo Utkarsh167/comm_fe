@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div cdkDropList class="drag-list" (cdkDropListDropped)="drop($event)">
+    <div class="drag-box" *ngFor="let emp of groupsEmployees; let i=index" cdkDrag>
+        <!-- <div class="countWrapper">{{i+1}}</div> -->
+
+         <!-- gender diffrentiate - Shivakumar A -->
+      <div class="countWrapper text-center"  *ngIf="emp.gender === maleValue" [ngStyle]="{'background-color': maleColor }"><span>{{i+1}}</span></div>
+      <div class="countWrapper text-center"  *ngIf="emp.gender === femaleValue" [ngStyle]="{'background-color': femaleColor }"><span>{{i+1}}</span></div> 
+      <div class="countWrapper text-center"  *ngIf="emp.gender === otherValue" [ngStyle]="{'background-color': otherColor }"><span>{{i+1}}</span></div> 
+      <div class="countWrapper text-center" *ngIf="emp.gender === undefined"><span>{{i+1}}</span></div> 
+
+
+        <!-- Added remove button - Shivakumar A -->
+        <button *ngIf="group.employees.length > 1" class="remove-btn-Wrapper" mat-icon-button (click)="removeConfirmation(emp)">
+            <mat-icon style="color: red; margin-bottom: 50px;" aria-label="Close">close</mat-icon>
+         </button>
+
+        <div class="flex_row">
+            <div class="flex_col_sm_5">
+                <label for="">Employee Id</label>
+                <p>{{emp?.employeeId}}</p>
+            </div>
+
+            <div class="flex_col_sm_5">
+                <label for="">Employee Name</label> 
+                <p>{{emp?.name}}</p>
+            </div>
+        </div>
+
+        <div class="flex_row">
+            <div class="flex_col_sm_5">
+                <label for="">Contact Number</label>
+                <p>{{emp?.mobileNo}}</p>
+            </div>
+
+            <div class="flex_col_sm_5">
+                <label for="" *ngIf="data?.shiftType=='login'">Pickup Location</label>
+                <label for="" *ngIf="data?.shiftType=='logout'">Drop Location</label>
+                <p>{{emp?.address}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="flex_row">
+    <div class="flex_col_sm_10">
+        <div class="form_filed_wrapper text-center mt20">
+            <ul class="btn_wrapper">
+                <li> <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>
+                </li>
+                <li> <button mat-raised-button color="primary" (click)="suffleGroup()">{{'Save'}}</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,208 @@
+.countWapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #89ead51f;
+    border-radius: 5px;
+    box-shadow: 0px 1px 2px -2px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 2px 5px 0px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.03);
+    padding: 40px 10px;
+    margin: 15px 0;
+    h6 {
+        width: 100%;
+        text-align: center;
+    }
+    p {
+        margin-top: 10px;
+    }
+}
+
+.flex_row {
+    align-items: flex-start;
+}
+
+.empList {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #89ead51f;
+    border-radius: 5px;
+    box-shadow: 0px 1px 2px -2px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 2px 5px 0px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.03);
+    padding: 20px 10px;
+    margin: 15px 0;
+    margin: 15px 0;
+    height: 400px;
+    overflow-y: auto;
+    h4 {
+        font-weight: 500;
+        font-size: 20px;
+        color: #09ad89;
+        font-family: Segoe UI;
+    }
+}
+
+ul {
+    margin-top: 20px;
+    li {
+        position: relative;
+        padding-left: 20px;
+        font-family: Segoe UI;
+        padding-right: 40px;
+        &:before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #333;
+            position: absolute;
+            left: 0;
+            top: 40%;
+        }
+        span {
+            font-weight: 600;
+            font-size: 15px;
+            color: #029973;
+        }
+        p {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .boarddata {
+            width: 99%;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+    }
+}
+
+.progressReport {
+    padding: 0 15px;
+    h2 {
+        font-size: 20px;
+        font-weight: 600;
+        font-family: Segoe UI;
+        text-transform: uppercase;
+        text-align: center;
+        color: #091e42;
+        @media(max-width: 1300px) {
+            font-size: 17px;
+        }
+    }
+    .circularBar {
+        width: 130px;
+        height: 130px;
+        border: 3px solid #07bb93;
+        border-radius: 50%;
+        margin: 20px auto 0 auto;
+        position: relative;
+        // background: #07bb93;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        .circlereport {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            flex-direction: column;
+            width: 90%;
+            height: 90%;
+            background: #fff;
+            border-radius: 50%;
+            h6 {
+                font-size: 30px;
+                font-weight: 500;
+                font-family: Segoe UI;
+            }
+            span {
+                font-size: 14px;
+                font-weight: 500;
+                font-family: Segoe UI;
+            }
+        }
+    }
+}
+
+.listData {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 7% auto 0 auto;
+    width: 80%;
+    li {
+        padding: 0;
+        &:before {
+            display: none;
+        }
+        h4 {
+            font-size: 26px;
+            font-weight: 500;
+        }
+        span {
+            font-size: 16px;
+            color: #333;
+            font-weight: 400 !important;
+        }
+    }
+}
+
+.chart-count {
+    text-align: center;
+    font-weight: 500;
+    font-family: 'Segoe UI';
+    font-size: 20px;
+    span {
+        font-weight: 600;
+        font-size: 19px;
+    }
+}
+
+.stats_report {
+    font-size: 20px;
+    font-weight: 600;
+    font-family: Segoe UI;
+    text-transform: uppercase;
+    text-align: left;
+    padding-left: 60px;
+    margin: 30px 0;
+    color: #091e42;
+    @media(max-width: 1500px) {
+        padding-left: 40px;
+    }
+    @media(max-width: 1500px) {
+        padding-left: 30px;
+        font-size: 17px;
+    }
+}
+
+.graph_report {
+    padding: 20px 0 20px 50px;
+    @media(max-width: 1500px) {
+        padding: 20px 0 20px 40px;
+    }
+    @media(max-width: 1500px) {
+        padding: 20px 0 20px 30px;
+    }
+    .flex_row {
+        margin-bottom: 50px;
+    }
+}
+
+.btn_wrapper {
+    li {
+        &:before {
+            display: none;
+        }
+    }
+}
+.border_trip{
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 30px;
+}

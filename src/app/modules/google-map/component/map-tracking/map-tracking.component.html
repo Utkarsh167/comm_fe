@@ -1,0 +1,8 @@
+<div #googleTrackingMap>
+  <app-marker *ngFor="let marker of keys; let i = index" [latitude]="markers[marker].latitude"
+    [longitude]="markers[marker].longitude" [map]="markers[marker].map" [id]="markers[marker].id" [index]="i"
+    [title]="markers[marker].title" [icon]="markers[marker].icon" [info]="markers[marker].info">
+  </app-marker>
+  <app-direction-service *ngIf="polyLineData" [empData]="polyLineData" [mapTracking]="map">
+  </app-direction-service>
+</div>

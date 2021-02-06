@@ -1,0 +1,296 @@
+<div class="custom_container">
+    <form [formGroup]="driverForm" #form="ngForm" (ngSubmit)="submitForm()">
+        <div class="white_wrapper">
+            <h2 class="heading">Genral Information</h2>
+            <div class="flex_row">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="javascript:void(0)">Stakeholders</a>
+                    </li>
+                    <li>
+                        <a routerLink="/admin/stakeholders/driver">Driver</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="active">{{driverId?'Edit':'Add'}}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="form_wrapper">
+                <div class="form_filed_wrapper">
+                    <label class="form_label">Upload Driver Image</label>
+                    <figure class="upload_img">
+                        <img [src]="driverImage || 'assets/images/placeholder-profile.jpg'" />
+                        <label class="upload-icon" for="upload_driver_img">
+              <mat-icon>camera</mat-icon>
+            </label>
+                    </figure>
+                    <input type="file" (change)="
+              onSelectFile(
+                $event,
+                documentTypes.driverImage,
+                'image/jpeg,image/png'
+              )
+            " id="upload_driver_img" style="display:none;" />
+                    <p *ngIf="form.submitted && getControl('profilePicture').invalid" class="profile_pic_error">
+                        {{ getControl("profilePicture") | validate: "Driver Image" }}
+                    </p>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Driver Name</mat-label>
+                                <input formControlName="name" matInput />
+                                <mat-error>{{ getControl("name") | validate: "Driver Name" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <!-- disable field for edit - satyam -->
+                            <mat-form-field appearance="outline" [class.disabled]="driverId">
+                                <mat-label>Email</mat-label>
+                                <!-- disable field for edit - satyam -->
+                                <input formControlName="email" matInput [readonly]="driverId" />
+                                <mat-error>{{ getControl("email") | validate: "Email" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Driver Mobile Number</mat-label>
+                                <input formControlName="mobileNo" numberOnly matInput  /> 
+                                <!-- [readonly]="driverId" -->
+                                <mat-error>{{ getControl("mobileNo") | validate: "Driver Mobile Number":"digits" }}
+                                </mat-error>
+                                <mat-error *ngIf="isUniqueMsg">{{ isUniqueMsg }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Emergency Number</mat-label>
+                                <input formControlName="emergencyNo" numberOnly matInput />
+                                <mat-error>{{ getControl("emergencyNo") | validate: "Emergency Number":"digits" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="white_wrapper">
+            <h2 class="heading">Additional Information</h2>
+
+            <div class="form_wrapper">
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <label class="form_label">Drunker</label>
+
+                            <mat-radio-group aria-label="Select an option" formControlName="drunker">
+                                <div class="flex_row">
+                                    <div class="flex_col_sm_3" *ngFor="let option of drinkingStatus">
+                                        <mat-radio-button [value]="option.value">{{ option.viewValue }}
+                                        </mat-radio-button>
+                                    </div>
+                                </div>
+                                <mat-error class="error_size" *ngIf="form.submitted && getControl('drunker').invalid">
+                                    {{ getControl("drunker") | validate: "Drinking Status" }}
+                                </mat-error>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <label class="form_label">Alcoholic/Non Alcoholic</label>
+                            <mat-radio-group aria-label="Select an option" formControlName="alcoholic">
+                                <div class="flex_row">
+                                    <div class="flex_col_sm_3" *ngFor="let option of radioOptions">
+                                        <mat-radio-button [value]="option.value">{{ option.viewValue }}
+                                        </mat-radio-button>
+                                    </div>
+                                </div>
+                                <mat-error class="error_size" *ngIf="form.submitted && getControl('alcoholic').invalid">
+                                    {{ getControl("alcoholic") | validate: "Alcoholic Status" }}
+                                </mat-error>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <label class="form_label">Consuming Tobacco</label>
+
+                            <mat-radio-group aria-label="Select an option" formControlName="tobacco">
+                                <div class="flex_row">
+                                    <div class="flex_col_sm_3" *ngFor="let option of radioOptions">
+                                        <mat-radio-button [value]="option.value">{{ option.viewValue }}
+                                        </mat-radio-button>
+                                    </div>
+                                </div>
+                                <mat-error class="error_size" *ngIf="form.submitted && getControl('tobacco').invalid">
+                                    {{ getControl("tobacco") | validate: "Tobacco Status" }}
+                                </mat-error>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <label class="form_label">BGV(Background Verification) Conducted</label>
+                            <mat-radio-group aria-label="Select an option" formControlName="backgroundVarified">
+                                <div class="flex_row">
+                                    <div class="flex_col_sm_3" *ngFor="let option of radioOptions">
+                                        <mat-radio-button [value]="option.value">{{ option.viewValue }}
+                                        </mat-radio-button>
+                                    </div>
+                                </div>
+                                <mat-error class="error_size" *ngIf="
+                    form.submitted && getControl('backgroundVarified').invalid
+                  ">
+                                    {{ getControl("backgroundVarified") | validate: "Background Verification Status" }}
+                                </mat-error>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="white_wrapper">
+            <h2 class="heading">Documents</h2>
+
+            <div class="form_wrapper">
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Address Proof</mat-label>
+                                <input matInput formControlName="addressProof" readonly />
+                                <label class="attach" for="address_proof">
+                  <mat-icon matSuffix>attach_file</mat-icon>
+                </label>
+                                <mat-error>{{ getControl("addressProof") | validate: "Address Proof" }}
+                                </mat-error>
+                            </mat-form-field>
+                            <input type="file" id="address_proof" (change)="onSelectFile($event, documentTypes.addressProof)" style="display:none;" />
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Driving License</mat-label>
+                                <input matInput formControlName="dl" readonly />
+                                <label class="attach" for="dl_proof">
+                  <mat-icon matSuffix>attach_file</mat-icon>
+                </label>
+                                <mat-error>{{ getControl("dl") | validate: "Driving License" }}
+                                </mat-error>
+                            </mat-form-field>
+                            <input type="file" id="dl_proof" (change)="onSelectFile($event, documentTypes.fullDl)" style="display:none;" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>DL Badge Number</mat-label>
+                                <input formControlName="DlBadgeNO" matInput />
+                                <mat-error>{{ getControl("DlBadgeNO") | validate: "Driving License Badge Number" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>DL Renewal Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="dlRenewalDate" (click)="picker1.open()" readonly />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error>{{ getControl("dlRenewalDate") | validate: "Driving License Renewal Date" }}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Right Palm</mat-label>
+                                <input matInput formControlName="rightPalm" readonly />
+                                <label class="attach" for="right_palm">
+                  <mat-icon matSuffix>attach_file</mat-icon>
+                </label>
+                                <mat-error>{{ getControl("rightPalm") | validate: "Right Palm" }}
+                                </mat-error>
+                            </mat-form-field>
+                            <input type="file" id="right_palm" (change)="onSelectFile($event, documentTypes.rightPalm)" style="display:none;" />
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Left Palm</mat-label>
+                                <input matInput formControlName="leftPalm" readonly />
+                                <label class="attach" for="left_palm">
+                  <mat-icon matSuffix>attach_file</mat-icon>
+                </label>
+                                <mat-error>{{ getControl("leftPalm") | validate: "Left Palm" }}
+                                </mat-error>
+                            </mat-form-field>
+                            <input type="file" id="left_palm" (change)="onSelectFile($event, documentTypes.leftPalm)" style="display:none;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="white_wrapper">
+            <div class="flex-row">
+                <span class="alert-message">All fields are mandatory</span>
+            </div>
+            <div class="flex-row">
+                <div class="flex-col-sm-10">
+                    <div class="form_filed_wrapper text-center">
+                        <ul class="btn_wrapper">
+                            <li>
+                                <button mat-raised-button type="button" [routerLink]="'DRIVER' | absolutePath">
+                  Cancel
+                </button>
+                            </li>
+                            <li>
+                                <button mat-raised-button type="submit" color="primary">
+                  {{ driverId ? "Update" : "Add" }}
+                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

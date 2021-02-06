@@ -1,0 +1,64 @@
+<div class="employee_detail">
+  <h4>Assign Vendor and Cab</h4>
+  <img src="./assets/images/cross.svg" class="cross" (click)="onNoClick()" />
+  <!-- crf issue resolved -- satyam -->
+  <form [formGroup]="cabForm" #form="ngForm" >
+    <div class="employeeListDtl">
+      <div class="flex_row">
+        <div class="flex_col_sm_5">
+          <mat-label>Select Vendor</mat-label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="vendorId" (selectionChange)="selectVendor($event.value)"
+              placeholder="Select Vendor">
+              <mat-option *ngFor="let vendor of vendors" [value]="vendor._id">
+                {{vendor.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              {{getControl('vendorId')|validate:'Vendor'}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex_col_sm_5">
+          <mat-label>Select Cab</mat-label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="cabId" [placeholder]="cabPlaceholder"
+              (selectionChange)="selectCab($event.value)">
+              <mat-option *ngFor="let cab of cabs" [value]="cab">
+                {{cab.routeNo}}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              {{getControl('cabId')|validate:'Cab'}}
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+      <div *ngIf="employees">
+        Employee Order :-
+        <div  class="flex_row" >
+          <div *ngFor="let employee of employees" style="margin-top: 10px; margin-left: 10px" >
+            <div class="box text-center" *ngIf="employee.gender=='female'" style="background-color: rgb(229, 104, 148, 1);">
+                F
+            </div>
+            <div class="box text-center" *ngIf="employee.gender=='male'" style="background-color: rgb(70, 170, 202, 1);">
+              M
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex_row" style="margin-top: 20px;">
+        <div class="flex_col_sm_10">
+          <ul class="btn_wrapper text-center">
+            <li> <button mat-raised-button color="primary" (click)="onNoClick()"> Cancel</button> </li>
+            <!-- crf issue resolved -- satyam -->
+            <li> <button mat-raised-button color="primary" (click)="approve()">
+                Done
+              </button> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,196 @@
+<div class="white_wrapper">
+  <div class="flex_row">
+    <div class="flex_col_sm_5">
+      <app-search-filter
+        [placeholder]="'Search by emp name, id and email'"
+        (setSearch)="setSearch($event)"
+      >
+      </app-search-filter>
+    </div>
+    <div class="flex_col_sm_5">
+      <ul class="btn_wrapper text-right">
+        <li>
+          <app-filter-count
+            [filterCount]="appliedFilterCount"
+          ></app-filter-count>
+        </li>
+        <li>
+          <button
+            mat-raised-button
+            (click)="showFilter = !showFilter"
+            color="primary"
+          >
+            <mat-icon>filter_list</mat-icon> Filter
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="flex_row">
+    <ul class="breadcrumb">
+      <li>
+        <a href="javascript:void(0)">Shift Management</a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" class="active">List</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div
+  class="white_wrapper filter_wrapper"
+  [class.filter_wrapper_show]="showFilter"
+>
+  <div class="flex_row">
+    <div class="flex_col_sm_3">
+      <h4>
+        &nbsp;
+      </h4>
+      <mat-form-field>
+        <mat-select
+          placeholder="Shift"
+          [formControl]="filterForm.controls.shiftName"
+        >
+          <!-- <mat-option *ngFor="let item of shifts" [value]="item.shiftName">{{ item.shiftName}}</mat-option> -->
+          <!-- changes by satyam -> Includes shift timing -->
+          <mat-option *ngFor="let item of shifts" [value]="item.shiftName">{{ item.shiftName+' '+'('+item.startShift+' - '+item.endShift+')'}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="flex_row">
+    <div class="flex_col_sm_10 text-center">
+      <ul class="btn_wrapper">
+        <li>
+          <button
+            filter_btn
+            mat-stroked-button
+            [disabled]="disable()"
+            (click)="resetFilter()"
+          >
+            Reset
+          </button>
+        </li>
+
+        <li>
+          <button
+            filter_btn
+            mat-raised-button
+            color="primary"
+            [disabled]="disable()"
+            (click)="filter()"
+          >
+            Filter
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="mat-elevation-z8 mt-30 x-scroll">
+  <table
+    mat-table
+    [dataSource]="employees"
+    matSort
+    (matSortChange)="sortData($event)"
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        {{ getSerialNumber(i + 1) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Employee Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name | checkNull }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="empid">
+      <th mat-header-cell *matHeaderCellDef>Employee ID</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.employeeId | checkNull }}
+      </td>
+    </ng-container>
+
+    <!-- Added Gender - Shivakumar A  -->
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef> Gender </th>
+      <td mat-cell *matCellDef="let element"> {{element.gender | checkNull}} </td>
+  </ng-container>
+  
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Employee Email</th>
+      <td mat-cell *matCellDef="let element" title="{{ element.email }}">
+        {{ element.email | checkNull }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="starttime">
+      <th mat-header-cell *matHeaderCellDef>Start Time</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.validFrom | customDate | checkNull }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endtime">
+      <th mat-header-cell *matHeaderCellDef>End Time</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.validTill | customDate | checkNull }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="shiftName">
+      <!-- <th mat-header-cell *matHeaderCellDef>Shift Name</th> -->
+      <!-- changed Shift Name to Requested Shift Shivakumar A -->
+      <th mat-header-cell *matHeaderCellDef>Requested Shift</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.shiftName | checkNull }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="weekend">
+      <th mat-header-cell *matHeaderCellDef>Weekoffs</th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngFor="let day of element.weekOff">
+          {{ day | viewWeekends }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button [matMenuTriggerFor]="menu" class="btn-more-menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item [routerLink]="'SHIFT_ADD'|absolutePath">
+                            <mat-icon matTooltip="Edit">edit</mat-icon> Edit
+                        </button>
+                    </mat-menu>
+                </td>
+            </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+  <div class="white_wrapper" *ngIf="total === 0">
+    <h2 class="not-found">No History Found</h2>
+  </div>
+
+  <div class="white_wrapper" *ngIf="employees.data.length">
+    <mat-paginator
+      [length]="total"
+      [pageIndex]="page - 1"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageOptions"
+      (page)="changePage($event)"
+    >
+    </mat-paginator>
+  </div>

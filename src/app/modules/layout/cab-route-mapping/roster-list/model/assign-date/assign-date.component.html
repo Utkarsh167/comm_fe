@@ -1,0 +1,98 @@
+<!-- new roster flow -- satyam -->
+<!-- <div class="employee_detail">
+  <h4>Assign Date</h4>
+  <img src="./assets/images/cross.svg" class="cross" (click)="onNoClick()" />
+
+  <form [formGroup]="cabForm" #form="ngForm" (ngSubmit)="addRoster()">
+    <div class="employeeListDtl"> -->
+      <!-- <div class="flex_row">
+          <div class="flex_col_sm_5">
+              <mat-label>Vendor's Name</mat-label>
+              <mat-form-field appearance="outline">
+                  <input matInput placeholder="Select Vendor's Name" value="Sushi">
+              </mat-form-field>
+          </div>
+          <div class="flex_col_sm_5">
+              <mat-label>Cab</mat-label>
+              <mat-form-field appearance="outline">
+                  <mat-select>
+                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                          {{food.viewValue}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+      </div> -->
+      <!-- <div class="flex_row">
+        <div class="flex_col_sm_5">
+          <mat-label>Valid From</mat-label>
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="picker" formControlName="validFrom" [min]="todayDate" [max]="cabForm.value.validTill"
+              (click)="picker.open()" placeholder="Select date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>{{getControl('validFrom')|validate:'From Date'}}</mat-error>
+          </mat-form-field>
+
+        </div>
+        <div class="flex_col_sm_5">
+          <mat-label>Valid Till</mat-label>
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="picker1" formControlName="validTill" [min]="cabForm.value.validFrom"
+              (click)="picker1.open()" placeholder="Select date">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error>{{getControl('validTill')|validate:'To Date'}}</mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+      <div class="flex_row">
+        <div class="flex_col_sm_10">
+          <ul class="btn_wrapper text-center">
+            <li> <a type="button" mat-raised-button color="primary" (click)="onNoClick()"> Cancel</a> </li>
+            <li> <button mat-raised-button color="primary">
+                Done
+              </button> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div> -->
+<div *ngIf="dateConfirmation" class="employee_detail">
+  <h4>Assign Date</h4>
+  <img src="./assets/images/cross.svg" class="cross" (click)="onNoClick()" />
+  <span>
+    Your rosters will be created from <label>{{validFrom}}</label> till <label>{{validTill}}</label> are you sure you want to continue
+  </span>
+  <div class="flex_row">
+    <div class="flex_col_sm_10">
+      <ul class="btn_wrapper text-center">
+        <li> <a type="button" mat-raised-button color="primary" (click)="onNoClick()"> Cancel</a> </li>
+        <li> <button mat-raised-button color="primary" (click)="addRoster()">
+            Done
+          </button> </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div *ngIf="checkExistingRoasters" class="employee_detail">
+  <h4>Check Existing Roasters</h4>
+  <img src="./assets/images/cross.svg" class="cross" (click)="onNoClick()" />
+  <span>
+    Roasters  for {{groupString}}  already exists, Do you want to over-ride them ?
+   
+  </span>
+  <div class="flex_row">
+    <div class="flex_col_sm_10">
+      <ul class="btn_wrapper text-center">
+        <li> <a type="button" mat-raised-button color="primary" (click)="onNoClick()"> Cancel</a> </li>
+        <li> <button mat-raised-button color="primary" (click)="confirmExistingroasters()">
+            Done
+          </button> </li>
+      </ul>
+    </div>
+  </div>
+</div>

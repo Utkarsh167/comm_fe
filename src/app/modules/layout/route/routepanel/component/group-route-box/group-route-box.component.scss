@@ -1,0 +1,179 @@
+.routeBox {
+    padding: 10px 15px;
+    border: 1px solid #cccccc;
+    margin-top: 15px;
+    border-radius: 5px;
+    min-height: 176px;
+    cursor: pointer;
+    @media(max-width: 1300px) {
+        margin-top: 0;
+    }
+    .groupName {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+        border-bottom: 1px solid #cccccc;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        @media(max-width: 1300px) {
+            flex-direction: column;
+        }
+        h4 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 500;
+            color: #4e595c;
+            padding-left: 20px;
+            width: 100%;
+            @media(max-width: 1400px) {
+                padding-left: 40px;
+            }
+        }
+    }
+    .editName {
+        cursor: pointer;
+        background-color: #79f2c0;
+        width: 25px;
+        height: 25px;
+        display: inline-block;
+        border-radius: 50%;
+        margin-left: 5px;
+        position: absolute;
+        left: 42px;
+        z-index: 999;
+        &.editpanel {
+            left: auto;
+            width: 15px;
+            height: 15px;
+            font-size: 15px;
+            color: #091e42;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 20px;
+            &.done {
+                right: 20px;
+            }
+        }
+        i {
+            font-size: 15px;
+            color: #091e42;
+            padding: 5px 6px;
+        }
+        .loginTime {
+            p {
+                font-size: 14px;
+                font-family: "Montserrat", sans-serif;
+                color: #5c5c5d;
+                font-weight: 500;
+                margin-bottom: 5px;
+                span {
+                    font-weight: 600;
+                }
+                &.ext-bold {
+                    font-weight: 600;
+                    @media(max-width: 1300px) {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+    .groupDetail {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .groupInfo {
+            width: 70%;
+            border-right: 1px solid #4e595c;
+            p {
+                margin: 0;
+                font-size: 15px;
+                font-weight: 400;
+                color: #4e595c;
+                line-height: 1.5;
+                @media(max-width: 1500px) {
+                    font-size: 14px;
+                }
+                @media(max-width: 1300px) {
+                    font-size: 13px;
+                }
+                &.ext-bold {
+                    font-weight: 600;
+                    @media(max-width: 1300px) {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        .mat-raised-button {
+            background-color: #79f2c0;
+            @media(max-width: 1400px) {
+                margin-left: 10px;
+            }
+        }
+    }
+}
+
+.groupStatus {
+    p {
+        @media(max-width: 1100px) {
+            font-size: 14px;
+        }
+    }
+}
+
+.currentGroup {
+    background-color: #4e595c
+}
+
+.editWrapper {
+    position: relative;
+}
+
+.loginTime {
+    @media(max-width: 1300px) {
+        text-align: center;
+        font-size: 15px;
+    }
+}
+
+:host ::ng-deep {
+    .groupStatus {
+        button {
+            @media(max-width: 1300px) {
+                padding: 5px;
+            }
+        }
+    }
+}
+
+
+.loginTime {
+    width: 100%;
+    padding-left: 40px;
+    text-align: left;
+    @media (min-width:1400px){
+        padding-left: 20px;
+    }
+    @media (max-width:1300px){
+        padding-left: 40px;
+    }
+    p{
+            font-size: 14px;
+            font-weight: 400;
+            color: #4e595c;
+            line-height: 1.5;
+        span{
+            margin-left: 10px;
+            font-weight: 500;
+        }
+    }
+}
+.ext-bold {
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: capitalize;
+}

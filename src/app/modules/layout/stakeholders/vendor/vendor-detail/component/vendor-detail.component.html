@@ -1,0 +1,142 @@
+<div class="custom_container">
+  <div class="white_wrapper">
+    <h2 class="heading">Vendor Detail</h2>
+
+    <div class="flex_row">
+      <ul class="breadcrumb">
+        <li>
+          <a href="javascript:void(0)">Stakeholders</a>
+        </li>
+        <li>
+          <a routerLink="/admin/stakeholders/vendor">Vendor</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="active">Detail</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form_wrapper" *ngIf="vendor">
+      <div class="flex_row">
+        <div class="flex_col_sm_3">
+          <div class="form_filed_wrapper_details">
+            <label class="form_label"> Vendor Image</label>
+            <figure class="upload_img">
+              <img [src]="vendor.profilePicture|customImage|async">
+            </figure>
+          </div>
+
+        </div>
+
+        <div class="flex_col_sm_7">
+
+            <div class="flex_row">
+                <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                    <label class="form_label">Vendor Name</label>
+                    <span class="show_label">{{vendor.name}}</span>
+                  </div>
+                </div>
+        
+                <div class="flex_col_sm_5">
+                  <div class="form_filed_wrapper_details">
+                    <label class="form_label">Vendor ID</label>
+                    <span class="show_label">{{vendor.badgeNo}}</span>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="flex_row">
+                  <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+          
+                      <label class="form_label">Contact Number</label>
+                      <span class="show_label">{{vendor.mobileNo}}</span>
+          
+                    </div>
+                  </div>
+          
+                  <div class="flex_col_sm_5">
+                    <div class="form_filed_wrapper_details">
+                      <label class="form_label">Email</label>
+                      <span class="show_label">{{vendor.email|checkNull}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                
+      <div class="flex_row">
+          <div class="flex_col_sm_5">
+            <div class="form_filed_wrapper_details">
+              <label class="form_label">Registration Date</label>
+              <span class="show_label">{{vendor.created|customDate|checkNull}}</span>
+            </div>
+          </div>
+          <div class="flex_col_sm_5">
+            <div class="form_filed_wrapper_details">
+              <label class="form_label">Number Of Cabs</label>
+              <span class="show_label">{{vendor.cabCount|checkNull}}</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="flex_row">
+            <div class="flex_col_sm_5">
+              <div class="form_filed_wrapper_details">
+                <label class="form_label">Status</label>
+                <span class="show_label">{{vendor.status|status|titlecase|checkNull}}</span>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+
+
+
+      </div>
+
+  
+
+
+
+
+ 
+
+      
+      <div class="flex_row">
+        <div class="flex_col_sm_10">
+          <div class="form_filed_wrapper_details text-center">
+            <ul class="btn_wrapper">
+              <!-- archive-button- satyam -->
+              <li> 
+                <button mat-raised-button color="primary" (click)="changeStatus('deleted', vendor._id)">Archive</button>
+                <button mat-raised-button color="primary"
+                    (click)="
+                    changeStatus(
+                        vendor.status === 'blocked' ? 'unblocked' : 'blocked',
+                        vendor._id
+                    )
+                    ">
+                  
+                    {{ vendor.status === "blocked" ? "un-block" : "Block" }}
+                  </button>
+                
+                <button mat-raised-button [routerLink]="['EDIT_VENDOR'|absolutePath,vendor._id]"
+                  color="primary">Edit</button> 
+                </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+  </div>
+</div>

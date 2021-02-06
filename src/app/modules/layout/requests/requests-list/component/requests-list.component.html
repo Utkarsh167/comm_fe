@@ -1,0 +1,109 @@
+<div class="parentWrapper">
+    <div class="white_wrapper">
+        <mat-tab-group (selectedTabChange)="tabRefresh($event)">
+
+            <!-- <mat-tab label="Cancelled">
+                <app-cancelled [isCancelledTab]="cancelledTabChange"></app-cancelled>
+            </mat-tab> -->
+
+            <!-- Added Badge - Shivakumar A -->
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingCancelledCount > 0">
+                        <span matBadge={{TotalPendingData.pendingCancelledCount}} matBadgeOverlap="false" matBadgeColor="warn">Cancelled</span>
+                    </div>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingCancelledCount == 0">
+                        <span>Cancelled</span>
+                    </div>
+                </ng-template>
+                <app-cancelled [isCancelledTab]="cancelledTabChange"></app-cancelled>
+            </mat-tab>
+
+            <!-- <mat-tab label="Reschedule">
+                <app-reschedule [isRescheduledTab]="rescheduledTabChange"></app-reschedule>
+            </mat-tab> -->
+
+            <!-- Added Badge - Shivakumar A -->
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingRescheduleCount > 0">
+                        <span matBadge={{TotalPendingData.pendingRescheduleCount}} matBadgeOverlap="false" matBadgeColor="warn">CRF</span>
+                    </div>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingRescheduleCount == 0">
+                        <span>CRF</span>
+                    </div>
+                </ng-template>
+                <app-reschedule [isRescheduledTab]="rescheduledTabChange"></app-reschedule>
+            </mat-tab>
+
+            <!-- <mat-tab label="SOS">
+                <app-sos [isSosTab]="sosTabChange"></app-sos>
+            </mat-tab> -->
+            <!-- Added Badge - Shivakumar A -->
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingSosCount > 0">
+                        <span matBadge={{TotalPendingData.pendingSosCount}} matBadgeOverlap="false" matBadgeColor="warn">SOS</span>
+                    </div>
+
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingSosCount == 0">
+                        <span>SOS</span>
+                    </div>
+                </ng-template>
+                <app-sos [isSosTab]="sosTabChange"></app-sos>
+            </mat-tab>
+
+            <!-- <mat-tab label="Address Change">
+                <app-address-change-request [isAddressTab]="addressTabChange"></app-address-change-request>
+            </mat-tab> -->
+
+            <!-- Added Badge - Shivakumar A -->
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingAddressCount > 0">
+                        <span matBadge={{TotalPendingData.pendingAddressCount}} matBadgeOverlap="false" matBadgeColor="warn">Address Change</span>
+                    </div>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingAddressCount == 0">
+                        <span>Address Change</span>
+                    </div>
+                </ng-template>
+                <app-address-change-request [isAddressTab]="addressTabChange"></app-address-change-request>
+                
+            </mat-tab>
+
+            <!-- <mat-tab label="Other Requests">
+                <app-other-requests [isOtherTab]="otherTabChange"></app-other-requests>
+            </mat-tab> -->
+
+            <!-- Added Badge - Shivakumar A -->
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingOtherRequestsCount > 0">
+                        <span matBadge={{TotalPendingData.pendingOtherRequestsCount}} matBadgeOverlap="false" matBadgeColor="warn">Other Requests</span>
+                    </div>
+
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingOtherRequestsCount == 0">
+                        <span>Other Requests</span>
+                    </div>
+                </ng-template>
+                <app-other-requests [isOtherTab]="otherTabChange"></app-other-requests>
+                
+            </mat-tab>
+
+            <!-- Added No Show Tab - Shivakumar A -->
+            <mat-tab>
+                <ng-template matTabLabel>
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingNoShowCount > 0">
+                        <span matBadge={{TotalPendingData.pendingNoShowCount}} matBadgeOverlap="false" matBadgeColor="warn">No Show</span>
+                    </div>
+
+                    <div *ngIf="TotalPendingData != null && TotalPendingData.pendingNoShowCount == 0">
+                        <span>No Show</span>
+                    </div>
+                </ng-template>
+                <app-no-show [isNoShowTab]="noShowTabChange"></app-no-show>
+                
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

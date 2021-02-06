@@ -1,0 +1,50 @@
+<div class="group-detail-wrapper" target="_self">
+    <div class="detailGroup" *ngIf="empDetails?.shiftType=='logout'">
+        <h3>{{empDetails?.shiftTime | shiftTime}}</h3>
+        <div class="groupBoxAlign">
+            {{'C'}}
+        </div>
+        <div class="groupBoxContnt">
+            <h6>{{empDetails?.companyCode}}</h6>
+            <p class="td-text-wrap" title="{{empDetails?.startLocation}}">{{empDetails?.startLocation}}</p>
+        </div>
+    </div>
+    <div class="detailGroup" *ngFor="let emp of empDetails?.employees |  sortEmployee; let i=index">
+        <h3 *ngIf="empDetails && empDetails?.shiftType=='login'">{{emp?.empPickupTime | shiftTime | checkNull}}</h3>
+        <h3 *ngIf="empDetails && empDetails?.shiftType=='logout'">{{emp?.empDropTime | shiftTime | checkNull}}</h3>
+        <!-- <div class="groupBoxAlign">
+            {{i+1}}
+        </div> -->
+        <!-- Added Color based on employee gender - Shivakumar A -->
+        <div class="groupBoxAlign" *ngIf="emp.gender === maleValue" [ngStyle]="{'background-color': maleColor }">
+            <span style="color: white;">{{i+1}}</span>  
+         </div>
+         <div class="groupBoxAlign" *ngIf="emp.gender === femaleValue" [ngStyle]="{'background-color': femaleColor }">
+            <span style="color: white;">{{i+1}}</span>  
+         </div>
+         <div class="groupBoxAlign" *ngIf="emp.gender === otherValue" [ngStyle]="{'background-color': otherColor }">
+            <span style="color: white;">{{i+1}}</span>  
+         </div>
+         <div class="groupBoxAlign" *ngIf="emp.gender === undefined">
+            {{i+1}} 
+         </div>
+         
+        <div class="groupBoxContnt">
+            <h6 title="{{'Id:-'}} {{emp.employeeId}}{{'\n'}}{{'Contact Number:-'}} {{emp.mobileNo}}">
+                {{emp?.name | checkNull}}</h6>
+            <p class="td-text-wrap">{{emp?.address | checkNull}}</p>
+        </div>
+    </div>
+
+    <div class="detailGroup" *ngIf="empDetails?.shiftType=='login'">
+        <h3>{{empDetails?.shiftTime | shiftTime}}</h3>
+        <div class="groupBoxAlign">
+            {{'C'}}
+        </div>
+        <div class="groupBoxContnt">
+            <h6>{{empDetails?.companyCode}}</h6>
+            <p class="td-text-wrap" title="{{empDetails?.endLocation}}">{{empDetails?.endLocation}}</p>
+        </div>
+    </div>
+
+</div>

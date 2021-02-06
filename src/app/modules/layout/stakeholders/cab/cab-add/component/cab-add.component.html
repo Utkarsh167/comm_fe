@@ -1,0 +1,461 @@
+<div class="custom_container">
+    <div class="white_wrapper">
+        <h2 class="heading">{{cabId?'Edit':'Add'}} Cab</h2>
+        <div class="flex_row">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="javascript:void(0)">Stakeholders</a>
+                </li>
+                <li>
+                    <a routerLink="/admin/stakeholders/cab">Cab</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" class="active">{{cabId?'Edit':'Add'}}</a>
+                </li>
+            </ul>
+        </div>
+        <form [formGroup]="cabForm" #form="ngForm" (ngSubmit)="addCab()">
+            <div class="form_wrapper">
+                <div class="flex_row">
+                    <div class="flex_col_sm_10">
+                        <div class="form_filed_wrapper text-center">
+                            <label class="form_label">Upload Cab Image</label>
+                            <figure class="upload_img">
+                                <img [src]="docs.cabImage||'assets/images/placeholder-single.png'">
+                                <label class="upload-icon" for="upload_driver_img">
+                           <mat-icon>camera</mat-icon>
+                        </label>
+                            </figure>
+                            <input type="file" (change)="onSelectFile($event, 'cabImage','image/jpeg,image/png')" id="upload_driver_img" style="display:none;">
+                            <p *ngIf="form.submitted&&getControl('cabImage').invalid" style="margin-top: 5px;color:#f44336">
+                                {{getControl('cabImage')|validate:'Cab Image'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Model Name</mat-label>
+                                <input formControlName="cabModel" matInput>
+                                <mat-error>{{getControl('cabModel')|validate:'Model Name'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+
+                            <mat-form-field appearance="outline" [class.disabled]="cabId">
+                                <mat-label>Registration Number</mat-label>
+                                <input formControlName="registrationNo" matInput [readonly]="cabId">
+                                <mat-error>{{getControl('registrationNo')|validate:'Registration Number'}}</mat-error>
+                                <mat-error *ngIf="isSubUniqueMsg">{{isSubUniqueMsg }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline"> 
+                                <mat-label>Vehicle Type</mat-label>
+                                 <!-- Added  ngClass & ngModelChange - Shivakumar A -->
+                                <mat-select formControlName="type" placeholder="Vehicle Type"  [ngClass]="selected" (ngModelChange)="assignMedicalCabSymbol($event)">
+                                    <mat-option *ngFor="let type of carType" [value]="type.value">
+                                        {{type.viewValue}} 
+                                        <!-- Added Medical Cab Symbol - Shivakumar A -->
+                                            <img class="medical_cab_symbol_option" *ngIf="type.viewValue === medicalCabValue" src="assets/images/medicalCab.png"/>
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('type')|validate:'Vehicle Type'}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Vendor Name</mat-label>
+                                <mat-select formControlName="vendorId" [disabled]="cabId" placeholder="Vehicle Type">
+                                    <mat-option *ngFor="let vendor of vendors" [value]="vendor._id">
+                                        {{vendor.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('vendorId')|validate:'Vendor Name'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Capacity</mat-label>
+                                <input formControlName="seatingCapacity" numberOnly matInput>
+                                <mat-error>{{getControl('seatingCapacity')|validate:'Capacity'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Color</mat-label>
+                                <input formControlName="color" (blur)="trimColor()" matInput>
+                                <mat-error>{{getControl('color')|validate:'Color'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>State Permit</mat-label>
+                                <input formControlName="statePermitNumber" matInput>
+                                <!-- <mat-error>{{getControl('statePermitNumber')|validate:'State Permit'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>All India Permit</mat-label>
+                                <input formControlName="countryPermitNumber" matInput>
+                                <!-- <mat-error>{{getControl('registrationNo')|validate:'All India Permit'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Fuel Type</mat-label>
+                                <mat-select formControlName="fuelType" placeholder="Fuel Type">
+                                    <mat-option *ngFor="let fuel of fuelType" [value]="fuel.value">
+                                        {{fuel.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('fuelType')|validate:'Fuel Type'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Transmission Type</mat-label>
+                                <mat-select formControlName="transmissionType" placeholder="Transmission Type">
+                                    <mat-option *ngFor="let transmission of transmissionType" [value]="transmission.value">
+                                        {{transmission.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('transmissionType')|validate:'Transmission Type'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <!-- disable field for edit - satyam -->
+                            <mat-form-field appearance="outline" [class.disabled]="cabId">
+                                <mat-label>Cab ID</mat-label>
+                                <!-- disable field for edit - satyam -->
+                                <input formControlName="routeNo" matInput [readonly]="cabId">
+                                <mat-error>{{getControl('routeNo')|validate:'Cab ID'}}</mat-error>
+                                <mat-error *ngIf="isBadgeUniqueMsg">{{isBadgeUniqueMsg }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Owner</mat-label>
+                                <mat-select formControlName="driverOwner" placeholder="Driver Cum/Owner">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <!-- <mat-error>{{getControl('driverOwner')|validate:'Driver/Owner'}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Driver Only</mat-label>
+                                <mat-select formControlName="driverOnly" placeholder="Driver Only">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('driverOnly')|validate:'Driver Only'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>AC</mat-label>
+                                <mat-select formControlName="ac" placeholder="AC">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('ac')|validate:'AC'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Panic Button</mat-label>
+                                <mat-select formControlName="panicButton" placeholder="Panic Button">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('panicButton')|validate:'Panic Button'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Tool Kit</mat-label>
+                                <mat-select formControlName="toolKit" placeholder="Tool Kit">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('toolKit')|validate:'Tool Kit'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Spare Wheel</mat-label>
+                                <mat-select formControlName="spareWheel" placeholder="Spare Wheel">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('spareWheel')|validate:'Spare Wheel'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>First Aid Kit</mat-label>
+                                <mat-select formControlName="firstAidKit" placeholder="First Aid Kit">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('firstAidKit')|validate:'First Aid Kit'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Torch And Umbrella</mat-label>
+                                <mat-select formControlName="torchAmbrella" placeholder="Torch And Umbrella">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('torchAmbrella')|validate:'Torch And Umbrella'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Fire Extinguisher</mat-label>
+                                <mat-select formControlName="fireExtingusher" placeholder="Fire Extingusher">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('fireExtingusher')|validate:'Fire Extinguisher'}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>VEH Condition Interior And Exterior</mat-label>
+                                <mat-select formControlName="interiorExterior" placeholder="VEH Condition Exterior And Exterior">
+                                    <mat-option *ngFor="let option of radioOption" [value]="option.value">
+                                        {{option.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>{{getControl('interiorExterior')|validate:'VEH Condition Interior And Exterior'}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Agreement Copy</mat-label>
+                                <input matInput formControlName="aggrementCopy" readonly>
+                                <label class="attach" for="aggrementCopy">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('aggrementCopy')|validate:'Agreement Copy'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="aggrementCopy" (change)="onSelectFile($event, 'aggrementCopy')" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Registration Certificate</mat-label>
+                                <input matInput formControlName="rgsCertificate" readonly>
+                                <label class="attach" for="rgsCertificate">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('rgsCertificate')|validate:'Registration Certificate'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="rgsCertificate" (change)="onSelectFile($event, 'rgsCertificate')" style="display:none;">
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Company ID Insurance Form</mat-label>
+                                <input matInput formControlName="companyIssuance" readonly>
+                                <label class="attach" for="companyIssuance">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('companyIssuance')|validate:'Company ID Insurance Form'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="companyIssuance" (change)="onSelectFile($event, 'companyIssuance')" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Fitness Certificate</mat-label>
+                                <input matInput formControlName="fitnessCertificate" readonly>
+                                <label class="attach" for="fitnessCertificate">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('fitnessCertificate')|validate:'Fitness Certificate'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="fitnessCertificate" (change)="onSelectFile($event, 'fitnessCertificate')" style="display:none;">
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Road Tax Experience</mat-label>
+                                <input matInput formControlName="roadTax" readonly>
+                                <label class="attach" for="roadTax">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('roadTax')|validate:'Road Tax Experience'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="roadTax" (change)="onSelectFile($event, 'roadTax')" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Insurance Experience</mat-label>
+                                <input matInput formControlName="insurance" readonly>
+                                <label class="attach" for="insurance">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('insurance')|validate:'Insurance Experience'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="insurance" (change)="onSelectFile($event, 'insurance')" style="display:none;">
+                        </div>
+                    </div>
+
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>State Permit Form-47</mat-label>
+                                <input matInput formControlName="statePermitForm" readonly>
+                                <label class="attach" for="statePermitForm">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('statePermitForm')|validate:'State Permit Form-47'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="statePermitForm" (change)="onSelectFile($event, 'statePermitForm')" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_5">
+                        <div class="form_filed_wrapper">
+                            <mat-form-field appearance="outline">
+                                <mat-label>All India Permit Form-49</mat-label>
+                                <input matInput formControlName="allIndiaPermitForm" readonly>
+                                <label class="attach" for="allIndiaPermitForm">
+                           <mat-icon matSuffix>attach_file</mat-icon>
+                        </label>
+                                <mat-error>{{getControl('allIndiaPermitForm')|validate:'All India Permit Form-49'}}</mat-error>
+                            </mat-form-field>
+                            <input type="file" id="allIndiaPermitForm" (change)="onSelectFile($event, 'allIndiaPermitForm')" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <span class="alert-message">All fields are Mandatory</span>
+                </div>
+                <div class="flex_row">
+                    <div class="flex_col_sm_10">
+                        <div class="form_filed_wrapper text-center">
+                            <ul class="btn_wrapper">
+                                <li> <button mat-raised-button type="button" [routerLink]="'CAB'|absolutePath">Cancel</button>
+                                </li>
+                                <li> <button mat-raised-button color="primary">{{cabId?'Update':'Add'}}</button> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
